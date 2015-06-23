@@ -1,0 +1,19 @@
+<?import sample.combobox.AutoSuggestKeyValueString?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<GridPane fx:controller="sample.Controller" xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10">
+    <HBox>
+        <VBox>
+            <Label text="Location Selected"/>
+            <Label fx:id="dataLabelLocation" text=""/>
+            <AutoSuggestKeyValueString fx:id="autosuggestLocation"/>
+        </VBox>
+        <VBox>
+            <Label text="Profession Selected"/>
+            <Label fx:id="dataLabelProfession" text=""/>
+            <AutoSuggestKeyValueString fx:id="autosuggestProfession"/>
+        </VBox>
+    </HBox>
+</GridPane>
