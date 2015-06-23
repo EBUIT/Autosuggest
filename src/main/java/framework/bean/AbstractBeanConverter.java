@@ -3,9 +3,6 @@ package framework.bean;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
-/**
- * Created by chardonnereau on 05.02.2015.
- */
 public abstract class AbstractBeanConverter<S,D> {
 
     private Class<S> entitySourceClass;
