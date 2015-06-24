@@ -64,7 +64,6 @@ public class AutoSuggestSearchRestClientMock<T> extends AutoSuggestComboBox<T> {
 
     }
 
-
     private void searchElements(SearchServiceMock<T> searchService, Function<T, String> textFieldFormatter, int occurences, Function<String, SearchCriteria> firstSearchCriteria, String term, List<T> result, Function<String, SearchCriteria>[] searchCriterias) {
         //HACK Use to manage the sample.autosuggest lock mode
         if(null != term) {
@@ -73,7 +72,6 @@ public class AutoSuggestSearchRestClientMock<T> extends AutoSuggestComboBox<T> {
             searchWithService(searchService, occurences, firstSearchCriteria, term);
         }
     }
-
 
     private void searchWithService(SearchServiceMock<T> searchService, int occurences, Function<String, SearchCriteria> firstSearchCriteria, String term) {
         List<T> result = newArrayList();
