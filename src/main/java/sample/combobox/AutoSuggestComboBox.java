@@ -29,7 +29,7 @@ public class AutoSuggestComboBox<T> extends ComboBox<T> {
     private static final KeyCodeCombination RIGHT = new KeyCodeCombination(KeyCode.RIGHT);
     private static final KeyCodeCombination BACK_SPACE = new KeyCodeCombination(KeyCode.BACK_SPACE);
     private static final KeyCodeCombination DELETE = new KeyCodeCombination(KeyCode.DELETE);
-    private static final KeyCodeCombination HOME= new KeyCodeCombination(KeyCode.HOME);
+    private static final KeyCodeCombination HOME = new KeyCodeCombination(KeyCode.HOME);
     private static final KeyCodeCombination TAB = new KeyCodeCombination(KeyCode.TAB);
     private static final KeyCodeCombination END = new KeyCodeCombination(KeyCode.END);
 //    private static final KeyCodeCombination CTRL = new KeyCodeCombination(KeyCode.CONTROL);
@@ -44,16 +44,16 @@ public class AutoSuggestComboBox<T> extends ComboBox<T> {
 
     /**
      * constructor
-     *
+     * <p>
      * ex :
-     *   new AutoSuggestComboBox<>(term -> FXCollections.observableArrayList(framework.service.framework.search(term, 10)),
-     *      t -> t.getCode(),
-     *      t->  String.format("%s - %s", t.getCode(), t.getName()))
+     * new AutoSuggestComboBox<>(term -> FXCollections.observableArrayList(framework.service.framework.search(term, 10)),
+     * t -> t.getCode(),
+     * t->  String.format("%s - %s", t.getCode(), t.getName()))
      *
-     * @param id  AutoSuggestBox identifier
+     * @param id                  AutoSuggestBox identifier
      * @param searchFunctionParam searchFunction have a String in parameter corresponding to the term framework.search and return List<T>
-     * @param textFieldFormatter function to convert value (type of T) into String - Display in abc.sample.combobox textfield
-     * @param labelItemFormatter function to convert value (type of T) into String - Display in abc.sample.combobox item label
+     * @param textFieldFormatter  function to convert value (type of T) into String - Display in abc.sample.combobox textfield
+     * @param labelItemFormatter  function to convert value (type of T) into String - Display in abc.sample.combobox item label
      */
     public AutoSuggestComboBox(String id, Function<String, List<T>> searchFunctionParam, Function<T, String> textFieldFormatter, Function<T, String> labelItemFormatter) {
         this();
@@ -63,15 +63,15 @@ public class AutoSuggestComboBox<T> extends ComboBox<T> {
 
     /**
      * constructor
-     *
+     * <p>
      * ex :
-     *   new AutoSuggestComboBox<>(term -> FXCollections.observableArrayList(framework.service.framework.search(term, 10)),
-     *      t -> t.getCode(),
-     *      t->  String.format("%s - %s", t.getCode(), t.getName()))
+     * new AutoSuggestComboBox<>(term -> FXCollections.observableArrayList(framework.service.framework.search(term, 10)),
+     * t -> t.getCode(),
+     * t->  String.format("%s - %s", t.getCode(), t.getName()))
      *
      * @param searchFunctionParam searchFunction have a String in parameter corresponding to the term framework.search and return List<T>
-     * @param textFieldFormatter function to convert value (type of T) into String - Display in abc.sample.combobox textfield
-     * @param labelItemFormatter function to convert value (type of T) into String - Display in abc.sample.combobox item label
+     * @param textFieldFormatter  function to convert value (type of T) into String - Display in abc.sample.combobox textfield
+     * @param labelItemFormatter  function to convert value (type of T) into String - Display in abc.sample.combobox item label
      * @deprecated use constructor with id
      */
     public AutoSuggestComboBox(Function<String, List<T>> searchFunctionParam, Function<T, String> textFieldFormatter, Function<T, String> labelItemFormatter) {
@@ -81,15 +81,14 @@ public class AutoSuggestComboBox<T> extends ComboBox<T> {
     }
 
     /**
-     *
      * ex :
-     *   new AutoSuggestComboBox<>(term -> FXCollections.observableArrayList(framework.service.framework.search(term, 10)),
-     *      t -> t.getCode(),
-     *      t->  String.format("%s - %s", t.getCode(), t.getName()))
+     * new AutoSuggestComboBox<>(term -> FXCollections.observableArrayList(framework.service.framework.search(term, 10)),
+     * t -> t.getCode(),
+     * t->  String.format("%s - %s", t.getCode(), t.getName()))
      *
      * @param searchFunctionParam searchFunction have a String in parameter corresponding to the term framework.search and return List<T>
-     * @param textFieldFormatter function to convert value (type of T) into String - Display in abc.sample.combobox textfield
-     * @param labelItemFormatter function to convert value (type of T) into String - Display in abc.sample.combobox item label
+     * @param textFieldFormatter  function to convert value (type of T) into String - Display in abc.sample.combobox textfield
+     * @param labelItemFormatter  function to convert value (type of T) into String - Display in abc.sample.combobox item label
      */
     public void init(Function<String, List<T>> searchFunctionParam, Function<T, String> textFieldFormatter, Function<T, String> labelItemFormatter) {
         setSearchFunction(searchFunctionParam);
@@ -103,7 +102,7 @@ public class AutoSuggestComboBox<T> extends ComboBox<T> {
 
 
     protected void displayList(List<T> result) {
-        if(!(result instanceof ObservableList)) {
+        if (!(result instanceof ObservableList)) {
             result = FXCollections.observableArrayList(result);
         }
         this.setItems((ObservableList<T>) result);
