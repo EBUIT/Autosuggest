@@ -9,6 +9,10 @@ public class LocationBean {
     private String code;
     private String name;
 
+    public LocationBean() {
+
+    }
+
     public LocationBean(long lid, String scode, String sname) {
         id = lid;
         code = scode;

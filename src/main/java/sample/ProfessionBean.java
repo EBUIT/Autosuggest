@@ -9,6 +9,10 @@ public class ProfessionBean {
     private String code;
     private String name;
 
+    public ProfessionBean(){
+
+    }
+
     public ProfessionBean(long lid, String scode, String sname) {
         id = lid;
         code = scode;
