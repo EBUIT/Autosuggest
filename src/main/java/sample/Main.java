@@ -25,7 +25,7 @@ public class Main extends Application {
         startProxy();
 
         LOG.info("Get Expectations");
-        Expectation.start();
+        Expectation.start(Expectation.SCENARIO.MOCK_1COL);
 
         LOG.info("Fx loading");
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
