@@ -8,7 +8,6 @@ import org.springframework.context.MessageSource;
  */
 public class MessageSourceUtil {
 
-
     private static MessageSource messageSourceUtil;
 
     /**

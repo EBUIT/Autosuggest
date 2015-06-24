@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context.xsd
+           http://www.springframework.org/schema/cache
+           http://www.springframework.org/schema/cache/spring-cache.xsd
+           http://www.springframework.org/schema/task
+           http://www.springframework.org/schema/task/spring-task.xsd">
+
+    <context:property-placeholder location="autosuggest.properties" system-properties-mode="OVERRIDE"/>
+    <context:annotation-config/>
+    <context:component-scan base-package="framework" annotation-config="true"/>
+
+    <cache:annotation-driven/>
+    <task:executor id="restExecutor" pool-size="10"/>
+
+    <bean name="messageSourceUtil" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basename" value="messages/messages"/>
+    </bean>
+
+    <bean id="restUrlFacade" class="framework.rest.RestUrlFacade">
+        <property name="references">
+            <map>
+                <entry key="sample.ProfessionBean" value="${profession.url}"/>
+                <entry key="sample.LocationBean" value="${location.url}"/>
+            </map>
+        </property>
+    </bean>
+
+    <!-- generic cache manager -->
+    <bean id="cacheManager" class="org.springframework.cache.support.SimpleCacheManager">
+        <property name="caches">
+            <set>
+                <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean">
+                    <property name="name" value="rest"/>
+                </bean>
+            </set>
+        </property>
+    </bean>
+
+</beans>

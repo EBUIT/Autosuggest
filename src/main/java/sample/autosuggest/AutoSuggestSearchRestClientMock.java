@@ -1,10 +1,10 @@
 package sample.autosuggest;
 
+import framework.mock.SearchServiceMock;
 import sample.combobox.AutoSuggestComboBox;
-import framework.search.SearchCriteria;
+import framework.bean.search.SearchCriteria;
 import framework.rest.RestClientParameters;
 import framework.rest.task.SearchRestClient;
-import framework.service.SearchService;
 import javafx.collections.FXCollections;
 import javafx.concurrent.Service;
 import javafx.concurrent.WorkerStateEvent;
@@ -32,26 +32,26 @@ public class AutoSuggestSearchRestClientMock<T> extends AutoSuggestComboBox<T> {
     /**
      * Init AutoSuggestSearchRestClient for 10 occurences with:
      *
-     * @param searchService         - {@link rest.task.SearchRestClient}
+     * @param searchService
      * @param textFieldFormatter - Function for text Field Formatter
      * @param labelItemFormatter - Function for Label formatter
-     * @param searchCriterias    - {@link bean.search.SearchCriteria} Functions
+     * @param searchCriterias    -
      */
-    public void init(final SearchService<T> searchService, final Function<T, String> textFieldFormatter, final Function<T, String> labelItemFormatter, final Function<String, SearchCriteria> firstSearchCriteria, final Function<String, SearchCriteria>... searchCriterias) {
+    public void init(final SearchServiceMock<T> searchService, final Function<T, String> textFieldFormatter, final Function<T, String> labelItemFormatter, final Function<String, SearchCriteria> firstSearchCriteria, final Function<String, SearchCriteria>... searchCriterias) {
         init(searchService, textFieldFormatter, labelItemFormatter, DEFAULT_OCCURENCE, firstSearchCriteria, searchCriterias);
     }
 
     /**
      * Init AutoSuggestSearchRestClient for {@code occurences} occurences with:
      *
-     * @param searchService         - {@link rest.task.SearchRestClient}
+     * @param searchService
      * @param textFieldFormatter - Function for text Field Formatter
      * @param labelItemFormatter - Function for Label formatter
      * @param occurences         - number of occurence to display
-     * @param searchCriterias    - {@link bean.search.SearchCriteria} Functions
+     * @param searchCriterias    -
      * @Deprecated - Use init with SearchService
      */
-    public void init(final SearchService<T> searchService, final Function<T, String> textFieldFormatter, final Function<T, String> labelItemFormatter, final int occurences, final Function<String, SearchCriteria> firstSearchCriteria, final Function<String, SearchCriteria>... searchCriterias) {
+    public void init(final SearchServiceMock<T> searchService, final Function<T, String> textFieldFormatter, final Function<T, String> labelItemFormatter, final int occurences, final Function<String, SearchCriteria> firstSearchCriteria, final Function<String, SearchCriteria>... searchCriterias) {
         super.init(term ->
                 {
                     List<T> result = new ArrayList<>();
@@ -65,7 +65,7 @@ public class AutoSuggestSearchRestClientMock<T> extends AutoSuggestComboBox<T> {
     }
 
 
-    private void searchElements(SearchService<T> searchService, Function<T, String> textFieldFormatter, int occurences, Function<String, SearchCriteria> firstSearchCriteria, String term, List<T> result, Function<String, SearchCriteria>[] searchCriterias) {
+    private void searchElements(SearchServiceMock<T> searchService, Function<T, String> textFieldFormatter, int occurences, Function<String, SearchCriteria> firstSearchCriteria, String term, List<T> result, Function<String, SearchCriteria>[] searchCriterias) {
         //HACK Use to manage the sample.autosuggest lock mode
         if(null != term) {
             result.addAll(searchLocked(textFieldFormatter, searchService, occurences, firstSearchCriteria, term, searchCriterias));
@@ -75,7 +75,7 @@ public class AutoSuggestSearchRestClientMock<T> extends AutoSuggestComboBox<T> {
     }
 
 
-    private void searchWithService(SearchService<T> searchService, int occurences, Function<String, SearchCriteria> firstSearchCriteria, String term) {
+    private void searchWithService(SearchServiceMock<T> searchService, int occurences, Function<String, SearchCriteria> firstSearchCriteria, String term) {
         List<T> result = newArrayList();
         Service<List<T>> service = search(searchService, term, occurences, firstSearchCriteria);
         service.setOnSucceeded((WorkerStateEvent event) -> {
@@ -85,19 +85,13 @@ public class AutoSuggestSearchRestClientMock<T> extends AutoSuggestComboBox<T> {
         });
     }
 
-    // FIXME problem looping?
-    private Collection<T> searchLocked(Function<T, String> textFieldFormatter, SearchService<T> searchService, int occurences, Function<String, SearchCriteria> firstSearchCriteria, String term, Function<String, SearchCriteria>[] searchCriterias) {
+    // TODO bad implementation to simplify
+    // we add first search result (firstSearchCriteria) with a second (!) search request (searchCriterias)
+    private Collection<T> searchLocked(Function<T, String> textFieldFormatter, SearchServiceMock<T> searchService, int occurences, Function<String, SearchCriteria> firstSearchCriteria, String term, Function<String, SearchCriteria>[] searchCriterias) {
         List<T> result = newArrayList();
         int elementToSearch = occurences;
         for (Function<String, SearchCriteria> function : asList(firstSearchCriteria, searchCriterias)) {
             result.addAll(search((SearchRestClient<T>) searchService.getPostListRestClient(), term, elementToSearch, function));
-//            if(result.size() >= occurences) {
-//                break;
-//            } else {
-//                elementToSearch -= result.size();
-//                break;
-//            }
-            //break;
         }
         return result;
     }
@@ -116,7 +110,7 @@ public class AutoSuggestSearchRestClientMock<T> extends AutoSuggestComboBox<T> {
         return clientRest.apply(innerParameters);
     }
 
-    private Service search(SearchService<T> searchService, String term, int elementToSearch, Function<String, SearchCriteria> function) {
+    private Service search(SearchServiceMock<T> searchService, String term, int elementToSearch, Function<String, SearchCriteria> function) {
         if (term == null){
             term = "";
         }
