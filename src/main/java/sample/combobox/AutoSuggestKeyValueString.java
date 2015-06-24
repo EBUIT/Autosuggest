@@ -12,7 +12,6 @@ import java.util.stream.Stream;
 /**
  * Auto suggest for static list with  KeyValue
  */
-
 public class AutoSuggestKeyValueString extends AutoSuggestComboBox<KeyValueStringLabel> {
 
 

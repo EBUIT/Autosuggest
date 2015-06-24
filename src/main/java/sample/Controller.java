@@ -2,8 +2,8 @@ package sample;
 
 import framework.bean.search.Like;
 import framework.bean.search.SearchCriteria;
-import framework.mock.SearchServiceFactoryMock;
-import framework.mock.SearchServiceMock;
+import framework.service.SearchService;
+import framework.service.SearchServiceFactory;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -39,7 +39,7 @@ public class Controller implements Initializable {
     private AutoSuggestSearchRestClientMock<ProfessionBean> autosuggestSearch;
 
     @Resource
-    private SearchServiceFactoryMock searchServiceFactoryMock;
+    private SearchServiceFactory searchServiceFactory;
 
     private ObjectProperty<KeyValueStringLabel> dataLocationProperty = new SimpleObjectProperty<>();
     private ObjectProperty<KeyValueStringLabel> dataprofessionProperty = new SimpleObjectProperty<>();
@@ -58,7 +58,7 @@ public class Controller implements Initializable {
         // init sample.autosuggest
         autosuggestLocation.init(searchFunctionParam(itemsLocation), textFieldFormatter, labelItemFormatter);
         autosuggestProfession.init(searchFunctionParam(itemsProfession), textFieldFormatter, labelItemFormatter);
-        updateGenericAutoSuggest(autosuggestSearch, searchServiceFactoryMock.searchService(ProfessionBean.class),
+        updateGenericAutoSuggest(autosuggestSearch, searchServiceFactory.searchService(ProfessionBean.class),
                 t -> String.format("%s - %s", t.getCode().toString(), t.getName()), t -> String.format("%s - %s", t.getCode().toString(), t.getName()),
                 "code", "name"
         );
@@ -69,7 +69,7 @@ public class Controller implements Initializable {
 
     public static void updateGenericAutoSuggest(
             AutoSuggestSearchRestClientMock<ProfessionBean> autoSuggest,
-            SearchServiceMock<ProfessionBean> searchService,
+            SearchService<ProfessionBean> searchService,
             Function<ProfessionBean, String> txtField,
             Function<ProfessionBean, String> cellField,
             String code,

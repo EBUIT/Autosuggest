@@ -1,15 +1,15 @@
 package sample.autosuggest;
 
-import framework.mock.SearchServiceMock;
-import sample.combobox.AutoSuggestComboBox;
 import framework.bean.search.SearchCriteria;
 import framework.rest.RestClientParameters;
 import framework.rest.task.SearchRestClient;
+import framework.service.SearchService;
 import javafx.collections.FXCollections;
 import javafx.concurrent.Service;
 import javafx.concurrent.WorkerStateEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import sample.combobox.AutoSuggestComboBox;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,7 +21,7 @@ import static com.google.common.collect.Lists.newArrayList;
 
 /**
  * Auto suggest with Search Criteria
- * <p/>
+ * <p>
  */
 public class AutoSuggestSearchRestClientMock<T> extends AutoSuggestComboBox<T> {
 
@@ -37,7 +37,7 @@ public class AutoSuggestSearchRestClientMock<T> extends AutoSuggestComboBox<T> {
      * @param labelItemFormatter - Function for Label formatter
      * @param searchCriterias    -
      */
-    public void init(final SearchServiceMock<T> searchService, final Function<T, String> textFieldFormatter, final Function<T, String> labelItemFormatter, final Function<String, SearchCriteria> firstSearchCriteria, final Function<String, SearchCriteria>... searchCriterias) {
+    public void init(final SearchService<T> searchService, final Function<T, String> textFieldFormatter, final Function<T, String> labelItemFormatter, final Function<String, SearchCriteria> firstSearchCriteria, final Function<String, SearchCriteria>... searchCriterias) {
         init(searchService, textFieldFormatter, labelItemFormatter, DEFAULT_OCCURENCE, firstSearchCriteria, searchCriterias);
     }
 
@@ -51,7 +51,7 @@ public class AutoSuggestSearchRestClientMock<T> extends AutoSuggestComboBox<T> {
      * @param searchCriterias    -
      * @Deprecated - Use init with SearchService
      */
-    public void init(final SearchServiceMock<T> searchService, final Function<T, String> textFieldFormatter, final Function<T, String> labelItemFormatter, final int occurences, final Function<String, SearchCriteria> firstSearchCriteria, final Function<String, SearchCriteria>... searchCriterias) {
+    public void init(final SearchService<T> searchService, final Function<T, String> textFieldFormatter, final Function<T, String> labelItemFormatter, final int occurences, final Function<String, SearchCriteria> firstSearchCriteria, final Function<String, SearchCriteria>... searchCriterias) {
         super.init(term ->
                 {
                     List<T> result = new ArrayList<>();
@@ -64,16 +64,16 @@ public class AutoSuggestSearchRestClientMock<T> extends AutoSuggestComboBox<T> {
 
     }
 
-    private void searchElements(SearchServiceMock<T> searchService, Function<T, String> textFieldFormatter, int occurences, Function<String, SearchCriteria> firstSearchCriteria, String term, List<T> result, Function<String, SearchCriteria>[] searchCriterias) {
+    private void searchElements(SearchService<T> searchService, Function<T, String> textFieldFormatter, int occurences, Function<String, SearchCriteria> firstSearchCriteria, String term, List<T> result, Function<String, SearchCriteria>[] searchCriterias) {
         //HACK Use to manage the sample.autosuggest lock mode
-        if(null != term) {
+        if (null != term) {
             result.addAll(searchLocked(textFieldFormatter, searchService, occurences, firstSearchCriteria, term, searchCriterias));
         } else {
             searchWithService(searchService, occurences, firstSearchCriteria, term);
         }
     }
 
-    private void searchWithService(SearchServiceMock<T> searchService, int occurences, Function<String, SearchCriteria> firstSearchCriteria, String term) {
+    private void searchWithService(SearchService<T> searchService, int occurences, Function<String, SearchCriteria> firstSearchCriteria, String term) {
         List<T> result = newArrayList();
         Service<List<T>> service = search(searchService, term, occurences, firstSearchCriteria);
         service.setOnSucceeded((WorkerStateEvent event) -> {
@@ -85,7 +85,7 @@ public class AutoSuggestSearchRestClientMock<T> extends AutoSuggestComboBox<T> {
 
     // TODO bad implementation to simplify
     // we add first search result (firstSearchCriteria) with a second (!) search request (searchCriterias)
-    private Collection<T> searchLocked(Function<T, String> textFieldFormatter, SearchServiceMock<T> searchService, int occurences, Function<String, SearchCriteria> firstSearchCriteria, String term, Function<String, SearchCriteria>[] searchCriterias) {
+    private Collection<T> searchLocked(Function<T, String> textFieldFormatter, SearchService<T> searchService, int occurences, Function<String, SearchCriteria> firstSearchCriteria, String term, Function<String, SearchCriteria>[] searchCriterias) {
         List<T> result = newArrayList();
         int elementToSearch = occurences;
         for (Function<String, SearchCriteria> function : asList(firstSearchCriteria, searchCriterias)) {
@@ -100,7 +100,7 @@ public class AutoSuggestSearchRestClientMock<T> extends AutoSuggestComboBox<T> {
     private List<T> search(SearchRestClient<T> clientRest, String term, int elementToSearch, Function<
             String, SearchCriteria> function) {
         SearchCriteria searchCriteria = SearchCriteria.of();
-        if(term != null) {
+        if (term != null) {
             searchCriteria = function.apply(term);
             searchCriteria.setMax(elementToSearch);
         }
@@ -108,12 +108,12 @@ public class AutoSuggestSearchRestClientMock<T> extends AutoSuggestComboBox<T> {
         return clientRest.apply(innerParameters);
     }
 
-    private Service search(SearchServiceMock<T> searchService, String term, int elementToSearch, Function<String, SearchCriteria> function) {
-        if (term == null){
+    private Service search(SearchService<T> searchService, String term, int elementToSearch, Function<String, SearchCriteria> function) {
+        if (term == null) {
             term = "";
         }
 
-        SearchCriteria searchCriteria =  function.apply(term);
+        SearchCriteria searchCriteria = function.apply(term);
         searchCriteria.setMax(elementToSearch);
 
         Service<List<T>> service = searchService.search(searchCriteria);
