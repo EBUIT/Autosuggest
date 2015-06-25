@@ -14,13 +14,11 @@ import javafx.util.StringConverter;
 import sample.autosuggest.AutoSuggestSearchRestClientMock;
 import sample.combobox.AutoSuggestKeyValueString;
 import sample.combobox.KeyValueString;
-import sample.combobox.KeyValueStringImpl;
 import sample.combobox.KeyValueStringLabel;
 import sample.mockserver.MockDatas;
 
 import javax.annotation.Resource;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.Function;

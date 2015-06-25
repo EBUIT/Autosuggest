@@ -16,7 +16,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
 
-import static com.google.common.collect.Lists.asList;
 import static com.google.common.collect.Lists.newArrayList;
 
 /**
@@ -65,12 +64,7 @@ public class AutoSuggestSearchRestClientMock<T> extends AutoSuggestComboBox<T> {
     }
 
     private void searchElements(SearchService<T> searchService, Function<T, String> textFieldFormatter, int occurences, Function<String, SearchCriteria> firstSearchCriteria, String term, List<T> result, Function<String, SearchCriteria>[] searchCriterias) {
-        //HACK Use to manage the sample.autosuggest lock mode
-        if (null != term) {
-            result.addAll(searchLocked(textFieldFormatter, searchService, occurences, firstSearchCriteria, term, searchCriterias));
-        } else {
-            searchWithService(searchService, occurences, firstSearchCriteria, term);
-        }
+        searchWithService(searchService, occurences, firstSearchCriteria, term);
     }
 
     private void searchWithService(SearchService<T> searchService, int occurences, Function<String, SearchCriteria> firstSearchCriteria, String term) {
@@ -83,15 +77,8 @@ public class AutoSuggestSearchRestClientMock<T> extends AutoSuggestComboBox<T> {
         });
     }
 
-    // TODO bad implementation to simplify
-    // we add first search result (firstSearchCriteria) with a second (!) search request (searchCriterias)
     private Collection<T> searchLocked(Function<T, String> textFieldFormatter, SearchService<T> searchService, int occurences, Function<String, SearchCriteria> firstSearchCriteria, String term, Function<String, SearchCriteria>[] searchCriterias) {
-        List<T> result = newArrayList();
-        int elementToSearch = occurences;
-        for (Function<String, SearchCriteria> function : asList(firstSearchCriteria, searchCriterias)) {
-            result.addAll(search((SearchRestClient<T>) searchService.getPostListRestClient(), term, elementToSearch, function));
-        }
-        return result;
+        return search((SearchRestClient<T>) searchService.getPostListRestClient(), term, occurences, firstSearchCriteria);
     }
 
     /**
