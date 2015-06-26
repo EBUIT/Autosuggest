@@ -30,12 +30,13 @@ public class Main extends Application {
         LOG.info("Fx loading");
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 1024, 768));
+        Scene scene = new Scene(root, 1024, 768);
+        primaryStage.setScene(scene);
         primaryStage.show();
     }
 
     @Override
-    public void stop(){
+    public void stop() {
         stopProxy();
     }
 

@@ -10,7 +10,9 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.ToggleButton;
 import javafx.util.StringConverter;
+import org.controlsfx.control.textfield.CustomTextField;
 import sample.autosuggest.AutoSuggestSearchRestClientMock;
 import sample.combobox.AutoSuggestKeyValueString;
 import sample.combobox.KeyValueString;
@@ -29,6 +31,8 @@ import static framework.bean.search.SearchElementFactory.*;
 public class Controller implements Initializable {
 
     @FXML
+    public ToggleButton toggleBtn;
+    @FXML
     Label dataLabelLocation, dataLabelProfession, dataLabelSearch, dataLabelTextViewList;
     @FXML
     AutoSuggestKeyValueString autosuggestLocation = new AutoSuggestKeyValueString();
@@ -37,8 +41,8 @@ public class Controller implements Initializable {
     @FXML
     AutoSuggestSearchRestClientMock<ProfessionBean> autosuggestSearch;
     @FXML
-    
-    // AutoSuggestFX autoSuggestFX;
+    CustomTextField customTextField;
+    // org.fxpart.AutoSuggestFX autoSuggestFX;
 
 
     @Resource
@@ -61,10 +65,9 @@ public class Controller implements Initializable {
         // init sample.autosuggest
         autosuggestLocation.init(searchFunctionParam(itemsLocation), textFieldFormatter, labelItemFormatter);
         autosuggestProfession.init(searchFunctionParam(itemsProfession), textFieldFormatter, labelItemFormatter);
-        updateGenericAutoSuggest(autosuggestSearch, searchServiceFactory.searchService(ProfessionBean.class),
-                t -> String.format("%s - %s", t.getCode().toString(), t.getName()), t -> String.format("%s - %s", t.getCode().toString(), t.getName()),
-                "code", "name"
-        );
+        updateGenericAutoSuggest(autosuggestSearch, searchServiceFactory.searchService(ProfessionBean.class), t -> String.format("%s - %s", t.getCode().toString(), t.getName()), t -> String.format("%s - %s", t.getCode().toString(), t.getName()), "code", "name");
+
+        customTextField.setRight(toggleBtn);
 
         // bind with Labels
         bind();

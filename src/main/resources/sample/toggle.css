@@ -1,0 +1,14 @@
+.star-button {
+    -fx-background-color: transparent;
+    -fx-background-image: url("../images/star2.png");
+    -fx-padding: 4 8;
+    -fx-background-image-repeat: no-repeat;
+}
+
+.star-button:selected {
+    -fx-background-image: url("../images/star.png");
+}
+
+.star-button:hover {
+    -fx-effect: dropshadow(three-pass-box, 10, 1.0, 100, 100), yellow, 8, 0.0%, 0, 0);
+}
