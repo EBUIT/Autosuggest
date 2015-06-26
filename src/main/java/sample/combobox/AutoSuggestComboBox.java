@@ -32,6 +32,18 @@ public class AutoSuggestComboBox<T> extends ComboBox<T> {
     private static final KeyCodeCombination HOME = new KeyCodeCombination(KeyCode.HOME);
     private static final KeyCodeCombination TAB = new KeyCodeCombination(KeyCode.TAB);
     private static final KeyCodeCombination END = new KeyCodeCombination(KeyCode.END);
+
+    /*
+    This style applied to AutoSuggestComboBox dropdown list
+     */
+    private static final String PREDEFINED_STYLE = "-fx-font-weight: bold;";
+    private static final String USUAL_STYLE = "-fx-font-weight: normal;";
+    /*
+    Have to store labelItemFormatter, because it used on every dropdown change
+     */
+    Function<T, String> labelItemFormatter = null;
+
+
 //    private static final KeyCodeCombination CTRL = new KeyCodeCombination(KeyCode.CONTROL);
 
     private Function<String, List<T>> searchFunction = (s) -> new ArrayList();
@@ -93,6 +105,11 @@ public class AutoSuggestComboBox<T> extends ComboBox<T> {
     public void init(Function<String, List<T>> searchFunctionParam, Function<T, String> textFieldFormatter, Function<T, String> labelItemFormatter) {
         setSearchFunction(searchFunctionParam);
         setTextFieldFormatter(textFieldFormatter);
+
+        /*
+        Store labelItemFormatter
+         */
+        this.labelItemFormatter = labelItemFormatter;
         setLabelItemFormatter(labelItemFormatter);
 
         // load on start
@@ -114,6 +131,22 @@ public class AutoSuggestComboBox<T> extends ComboBox<T> {
         this.setCellFactory(new Callback<ListView<T>, ListCell<T>>() {
             @Override
             public ListCell<T> call(ListView<T> param) {
+
+                /*
+                Check for text in comboBox TextField, and choose style
+                 */
+                String term = AutoSuggestComboBox.this.getEditor().getText();
+                String styleString = null;
+                if (term!=null){
+                    if (term.length()>0){
+                        styleString = PREDEFINED_STYLE;
+                    }
+                    else{
+                        styleString = USUAL_STYLE;
+                    }
+                }
+                final String styleToApply = styleString;
+
                 return new ListCell<T>() {
                     @Override
                     public void updateItem(T item,
@@ -127,6 +160,10 @@ public class AutoSuggestComboBox<T> extends ComboBox<T> {
 
                         if (item != null) {
                             setText(item.toString());
+
+                            //Apply style
+                            setStyle(styleToApply);
+
                             if (labelItemFormatter != null) {
                                 final String title = labelItemFormatter.apply(item);
                                 setText(title);
@@ -195,11 +232,15 @@ public class AutoSuggestComboBox<T> extends ComboBox<T> {
                     return;
                 }
 
-                ObservableList<T> list = FXCollections.observableArrayList();
+                /*
+                list should be instantiated on every key release
+                 */
+                ObservableList<T> list = FXCollections.observableArrayList(searchFunction.apply(term));
 
-                List<T> listResult = searchFunction.apply(term);
-
-                list.addAll(listResult);
+                /*
+                On key released dropDown style should be applied
+                 */
+                AutoSuggestComboBox.this.setLabelItemFormatter(labelItemFormatter);
 
                 AutoSuggestComboBox.this.getSelectionModel().clearSelection();
                 AutoSuggestComboBox.this.setItems(null);
