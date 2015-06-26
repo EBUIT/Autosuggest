@@ -1,26 +1,39 @@
-<?import sample.combobox.AutoSuggestKeyValueString?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import sample.autosuggest.AutoSuggestSearchRestClientMock?>
-<GridPane fx:controller="sample.Controller" xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10">
-    <HBox>
-        <VBox>
-            <Label text="Location Selected"/>
-            <Label fx:id="dataLabelLocation" text=""/>
-            <AutoSuggestKeyValueString fx:id="autosuggestLocation"/>
+<?xml version="1.0" encoding="UTF-8"?>
 
-        </VBox>
-        <VBox>
-            <Label text="Profession Selected"/>
-            <Label fx:id="dataLabelProfession" text=""/>
-            <AutoSuggestKeyValueString fx:id="autosuggestProfession"/>
-        </VBox>
-        <VBox>
-            <Label text="Profession Search"/>
-            <Label fx:id="dataLabelSearch" text=""/>
-            <AutoSuggestSearchRestClientMock fx:id="autosuggestSearch" />
-        </VBox>
-    </HBox>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import sample.autosuggest.AutoSuggestSearchRestClientMock?>
+<?import sample.combobox.AutoSuggestKeyValueString?>
+<?import org.controlsfx.control.textfield.CustomTextField?>
+<GridPane alignment="center" hgap="10" prefHeight="352.0" prefWidth="814.0" vgap="10"
+          xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.40" fx:controller="sample.Controller">
+
+    <Label text="Combo Location" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+    <Label text="Combo Profession" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+    <Label text="Profession ASRestSearch" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
+    <Label text="TextView ListView" GridPane.columnIndex="4" GridPane.rowIndex="1"/>
+
+    <AutoSuggestKeyValueString fx:id="autosuggestLocation" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+    <AutoSuggestKeyValueString fx:id="autosuggestProfession" GridPane.columnIndex="2" GridPane.rowIndex="2"/>
+    <AutoSuggestSearchRestClientMock fx:id="autosuggestSearch" GridPane.columnIndex="3" GridPane.rowIndex="2"/>
+    <CustomTextField fx:id="customTextField" GridPane.columnIndex="4" GridPane.rowIndex="2"/>
+
+    <Label fx:id="dataLabelLocation" text="" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+    <Label fx:id="dataLabelProfession" text="" GridPane.columnIndex="2" GridPane.rowIndex="3"/>
+    <Label fx:id="dataLabelSearch" text="" GridPane.columnIndex="3" GridPane.rowIndex="3"/>
+    <Label fx:id="dataLabelTextViewList" text="" GridPane.columnIndex="4" GridPane.rowIndex="3"/>
+
+    <columnConstraints>
+        <ColumnConstraints maxWidth="216.0" minWidth="10.0" prefWidth="45.0"/>
+        <ColumnConstraints maxWidth="216.0" minWidth="10.0" prefWidth="191.0"/>
+        <ColumnConstraints maxWidth="781.0" minWidth="184.0" prefWidth="184.0"/>
+        <ColumnConstraints maxWidth="590.0" minWidth="197.0" prefWidth="197.0"/>
+        <ColumnConstraints maxWidth="203.0" minWidth="10.0" prefWidth="203.0"/>
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints maxHeight="36.0" minHeight="0.0" prefHeight="30.0"/>
+        <RowConstraints maxHeight="36.0" minHeight="0.0" prefHeight="30.0"/>
+        <RowConstraints maxHeight="89.0" minHeight="53.0" prefHeight="59.0"/>
+        <RowConstraints minHeight="10.0" prefHeight="30.0"/>
+    </rowConstraints>
 </GridPane>

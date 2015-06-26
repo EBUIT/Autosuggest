@@ -19,9 +19,15 @@
         <jackson-annotations.version>2.6.0-rc2</jackson-annotations.version>
         <spring.version>4.1.6.RELEASE</spring.version>
         <datatype.version>2.5.2</datatype.version>
+        <controlsfx.version>8.40.9</controlsfx.version>
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>org.controlsfx</groupId>
+            <artifactId>controlsfx</artifactId>
+            <version>${controlsfx.version}</version>
+        </dependency>
         <!-- log -->
         <dependency>
             <groupId>org.slf4j</groupId>

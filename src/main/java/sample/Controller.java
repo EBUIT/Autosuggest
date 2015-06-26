@@ -29,13 +29,17 @@ import static framework.bean.search.SearchElementFactory.*;
 public class Controller implements Initializable {
 
     @FXML
-    Label dataLabelLocation, dataLabelProfession;
+    Label dataLabelLocation, dataLabelProfession, dataLabelSearch, dataLabelTextViewList;
     @FXML
     AutoSuggestKeyValueString autosuggestLocation = new AutoSuggestKeyValueString();
     @FXML
     AutoSuggestKeyValueString autosuggestProfession = new AutoSuggestKeyValueString();
     @FXML
-    private AutoSuggestSearchRestClientMock<ProfessionBean> autosuggestSearch;
+    AutoSuggestSearchRestClientMock<ProfessionBean> autosuggestSearch;
+    @FXML
+    
+    // AutoSuggestFX autoSuggestFX;
+
 
     @Resource
     private SearchServiceFactory searchServiceFactory;
