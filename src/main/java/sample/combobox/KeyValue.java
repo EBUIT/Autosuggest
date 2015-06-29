@@ -5,7 +5,7 @@ package sample.combobox;
  */
 public interface KeyValue<K, V> {
 
-    V getValue();
-
     K getKey();
+
+    V getValue();
 }

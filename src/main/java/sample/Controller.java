@@ -11,7 +11,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
-import javafx.scene.text.*;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.util.StringConverter;
 import org.controlsfx.control.textfield.CustomTextField;
 import sample.autosuggest.AutoSuggestSearchRestClientMock;
@@ -69,20 +72,16 @@ public class Controller implements Initializable {
         autosuggestLocation.init(searchFunctionParam(itemsLocation), textFieldFormatter, labelItemFormatter);
         autosuggestProfession.init(searchFunctionParam(itemsProfession), textFieldFormatter, labelItemFormatter);
         updateGenericAutoSuggest(autosuggestSearch, searchServiceFactory.searchService(ProfessionBean.class), t -> String.format("%s - %s", t.getCode().toString(), t.getName()), t -> String.format("%s - %s", t.getCode().toString(), t.getName()), "code", "name");
-
         customTextField.setRight(toggleBtn);
 
-
-        //
+        // test Styled Text
         String family = "Helvetica";
         double size = 20;
-        Text text1 = new Text("Hello ");
-        text1.setFont(Font.font(family, size));
-        Text text2 = new Text("Bold");
-        text2.setFont(Font.font(family, FontWeight.BOLD, size));
-        Text text3 = new Text(" World");
-        text3.setFont(Font.font(family, FontPosture.ITALIC, size));
-        textFlow1.getChildren().addAll(text1, text2, text3);
+        Text text1 = new Text("Po");
+        text1.setFont(Font.font(family, FontWeight.BOLD, size));
+        Text text2 = new Text("int of view");
+        text2.setFont(Font.font(family, size));
+        textFlow1.getChildren().addAll(text1, text2);
 
         // bind with Labels
         bind();
