@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.text.*;
 import javafx.util.StringConverter;
 import org.controlsfx.control.textfield.CustomTextField;
 import sample.autosuggest.AutoSuggestSearchRestClientMock;
@@ -30,6 +31,8 @@ import static framework.bean.search.SearchElementFactory.*;
 
 public class Controller implements Initializable {
 
+    @FXML
+    TextFlow textFlow1, textFlow2, textFlow3, textFlow4;
     @FXML
     public ToggleButton toggleBtn;
     @FXML
@@ -68,6 +71,18 @@ public class Controller implements Initializable {
         updateGenericAutoSuggest(autosuggestSearch, searchServiceFactory.searchService(ProfessionBean.class), t -> String.format("%s - %s", t.getCode().toString(), t.getName()), t -> String.format("%s - %s", t.getCode().toString(), t.getName()), "code", "name");
 
         customTextField.setRight(toggleBtn);
+
+
+        //
+        String family = "Helvetica";
+        double size = 20;
+        Text text1 = new Text("Hello ");
+        text1.setFont(Font.font(family, size));
+        Text text2 = new Text("Bold");
+        text2.setFont(Font.font(family, FontWeight.BOLD, size));
+        Text text3 = new Text(" World");
+        text3.setFont(Font.font(family, FontPosture.ITALIC, size));
+        textFlow1.getChildren().addAll(text1, text2, text3);
 
         // bind with Labels
         bind();

@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.TextFlow?>
 <?import org.controlsfx.control.textfield.CustomTextField?>
 <?import sample.autosuggest.AutoSuggestSearchRestClientMock?>
 <?import sample.combobox.AutoSuggestKeyValueString?>
@@ -33,6 +34,10 @@
     <Label fx:id="dataLabelSearch" styleClass="context-menu" text="" GridPane.columnIndex="3" GridPane.rowIndex="4"/>
     <Label fx:id="dataLabelTextViewList" styleClass="context-menu" text="" GridPane.columnIndex="4"
            GridPane.rowIndex="4"/>
+    <TextFlow fx:id="textFlow1" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1"/>
+    <TextFlow fx:id="textFlow2" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2"/>
+    <TextFlow fx:id="textFlow3" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3"/>
+    <TextFlow fx:id="textFlow4" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4"/>
 
     <columnConstraints>
         <ColumnConstraints maxWidth="216.0" minWidth="10.0" prefWidth="45.0"/>
