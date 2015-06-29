@@ -20,11 +20,11 @@
     <Label styleClass="table-view" text="TextView ListView" GridPane.columnIndex="4" GridPane.rowIndex="2"/>
 
     <AutoSuggestKeyValueString fx:id="autosuggestLocation" styleClass="menu" GridPane.columnIndex="1"
-                               GridPane.rowIndex="3"/>
+                               GridPane.rowIndex="3" stylesheets="@autosuggest.css"/>
     <AutoSuggestKeyValueString fx:id="autosuggestProfession" styleClass="column-header" GridPane.columnIndex="2"
-                               GridPane.rowIndex="3"/>
+                               GridPane.rowIndex="3" stylesheets="@autosuggest.css"/>
     <AutoSuggestSearchRestClientMock fx:id="autosuggestSearch" styleClass="table-row-cell" GridPane.columnIndex="3"
-                                     GridPane.rowIndex="3"/>
+                                     GridPane.rowIndex="3" stylesheets="@autosuggest.css"/>
     <CustomTextField fx:id="customTextField" styleClass="filler" GridPane.columnIndex="4" GridPane.rowIndex="3"/>
 
     <Label fx:id="dataLabelLocation" styleClass="context-menu" text="TEST" textFill="#2d9aab" GridPane.columnIndex="1"

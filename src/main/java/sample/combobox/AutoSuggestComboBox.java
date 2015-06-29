@@ -36,8 +36,13 @@ public class AutoSuggestComboBox<T> extends ComboBox<T> {
     /*
     This style applied to AutoSuggestComboBox dropdown list
      */
-    private static final String PREDEFINED_STYLE = "-fx-font-weight: bold;";
-    private static final String USUAL_STYLE = "-fx-font-weight: normal;";
+    private static enum DropDownStyle {HIGHLIGHTED, USUAL};
+    /*
+    CSS style class names
+     */
+    private static final String HIGHLIGHTED_CLASS = "highlighted-dropdown";
+    private static final String USUAL_CLASS = "usual-dropdown";
+
     /*
     Have to store labelItemFormatter, because it used on every dropdown change
      */
@@ -136,16 +141,16 @@ public class AutoSuggestComboBox<T> extends ComboBox<T> {
                 Check for text in comboBox TextField, and choose style
                  */
                 String term = AutoSuggestComboBox.this.getEditor().getText();
-                String styleString = null;
+                DropDownStyle dropDownStyle = null;
                 if (term!=null){
                     if (term.length()>0){
-                        styleString = PREDEFINED_STYLE;
+                        dropDownStyle = DropDownStyle.HIGHLIGHTED;
                     }
                     else{
-                        styleString = USUAL_STYLE;
+                        dropDownStyle = DropDownStyle.USUAL;
                     }
                 }
-                final String styleToApply = styleString;
+                final DropDownStyle styleToApply = dropDownStyle;
 
                 return new ListCell<T>() {
                     @Override
@@ -162,7 +167,13 @@ public class AutoSuggestComboBox<T> extends ComboBox<T> {
                             setText(item.toString());
 
                             //Apply style
-                            setStyle(styleToApply);
+                            getStyleClass().removeAll(HIGHLIGHTED_CLASS, USUAL_CLASS);
+                            if (styleToApply.equals(DropDownStyle.HIGHLIGHTED)){
+                                getStyleClass().add(HIGHLIGHTED_CLASS);
+                            }
+                            else if (styleToApply.equals(DropDownStyle.USUAL)){
+                                getStyleClass().add(USUAL_CLASS);
+                            }
 
                             if (labelItemFormatter != null) {
                                 final String title = labelItemFormatter.apply(item);
@@ -178,7 +189,6 @@ public class AutoSuggestComboBox<T> extends ComboBox<T> {
             }
         });
     }
-
 
     public void setTextFieldFormatter(Function<T, String> textFieldFormatter) {
         super.setConverter(new StringConverter<T>() {
