@@ -34,7 +34,7 @@ public class Controller implements Initializable {
     @FXML
     public ToggleButton toggleBtn;
     @FXML
-    Label dataLabelLocation, dataLabelProfession, dataLabelSearch, dataLabelTextViewList;
+    Label dataLabelLocation, dataLabelProfession, dataLabelSearch, dataLabelTextViewList, dataLabelLocationPartDeco;
     @FXML
     AutoSuggestKeyValueString autosuggestLocation = new AutoSuggestKeyValueString();
     @FXML
@@ -47,12 +47,16 @@ public class Controller implements Initializable {
 
     @FXML
     ComboBox combo;
+    @FXML
+    PartTextDecoComboBox partTextDecoLocation;
+
 
     @Resource
     private SearchServiceFactory searchServiceFactory;
 
     private ObjectProperty<KeyValueStringLabel> dataLocationProperty = new SimpleObjectProperty<>();
     private ObjectProperty<KeyValueStringLabel> dataprofessionProperty = new SimpleObjectProperty<>();
+    private ObjectProperty<KeyValueStringLabel> partDecoDataLocationProperty = new SimpleObjectProperty<>();
 
     private final ObservableList strings = FXCollections.observableArrayList("Option 1", "Option 2", "Option 3",
             "Option 4", "Option 5", "Option 6",
@@ -84,6 +88,10 @@ public class Controller implements Initializable {
         combo.setItems(strings);
 //        FxUtils.autoCompleteComboBox(combo, FxUtils.AutoCompleteMode.CONTAINING);
         FxUtils2.autoCompleteComboBox(combo, FxUtils2.AutoCompleteMode.STARTS_WITH);
+
+        partTextDecoLocation.init(searchFunctionParam(itemsLocation),
+                textFieldFormatter
+        );
 
         // bind with Labels
         bind();
@@ -127,7 +135,20 @@ public class Controller implements Initializable {
                 throw new UnsupportedOperationException("Converter not implemented");
             }
         });
+        partTextDecoLocation.valueProperty().bindBidirectional(partDecoDataLocationProperty);
+        Bindings.bindBidirectional(dataLabelLocationPartDeco.textProperty(),
+                partDecoDataLocationProperty,
+                new StringConverter<KeyValueStringLabel>() {
+                    @Override
+                    public String toString(KeyValueStringLabel object) {
+                        return object == null ? "No Value Selected" : object.getValue();
+                    }
 
+                    @Override
+                    public KeyValueString fromString(String string) {
+                        throw new UnsupportedOperationException("Converter not implemented");
+                    }
+                });
     }
 
     // framework.search function for this combo
