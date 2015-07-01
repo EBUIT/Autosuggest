@@ -55,7 +55,7 @@ public class MockDatas {
             e.printStackTrace();
         }
         final String code = (sc.getTerms().get(0)).getValue().toString();
-        return toJson(loadProfession().stream().filter(kv -> kv.getValue().toUpperCase().contains((code))));
+        return toJson(loadProfession().stream().filter(kv -> kv.getValue().toUpperCase().contains((code.toUpperCase()))));
     }
 
     private static String toJson(Stream s) {
