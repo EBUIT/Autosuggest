@@ -60,7 +60,6 @@ public class AutoSuggestSearchRestClientMock<T> extends AutoSuggestComboBox<T> {
                 },
                 textFieldFormatter,
                 labelItemFormatter);
-
     }
 
     private void searchElements(SearchService<T> searchService, Function<T, String> textFieldFormatter, int occurences, Function<String, SearchCriteria> firstSearchCriteria, String term, List<T> result, Function<String, SearchCriteria>[] searchCriterias) {
@@ -73,7 +72,6 @@ public class AutoSuggestSearchRestClientMock<T> extends AutoSuggestComboBox<T> {
         service.setOnSucceeded((WorkerStateEvent event) -> {
             result.addAll((List<T>) event.getSource().getValue());
             this.setItems(FXCollections.observableArrayList(result));
-
         });
     }
 
@@ -94,7 +92,7 @@ public class AutoSuggestSearchRestClientMock<T> extends AutoSuggestComboBox<T> {
         RestClientParameters innerParameters = RestClientParameters.of(searchCriteria);
         return clientRest.apply(innerParameters);
     }
-
+    // this is the main function for searching
     private Service search(SearchService<T> searchService, String term, int elementToSearch, Function<String, SearchCriteria> function) {
         if (term == null) {
             term = "";
@@ -102,7 +100,7 @@ public class AutoSuggestSearchRestClientMock<T> extends AutoSuggestComboBox<T> {
 
         SearchCriteria searchCriteria = function.apply(term);
         searchCriteria.setMax(elementToSearch);
-
+// get RestClient
         Service<List<T>> service = searchService.search(searchCriteria);
         service.start();
         return service;

@@ -1,45 +1,112 @@
 package sample.mockserver;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import framework.bean.search.SearchCriteria;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import org.mockserver.model.Body;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import sample.combobox.*;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
+import java.util.stream.Stream;
 
 /**
  * Created by metairie on 24-Jun-15.
  */
 public class MockDatas {
+    private final static Logger LOG = LoggerFactory.getLogger(MockDatas.class);
 
-    public static String loadLocationBean() {
-        // data for Location
-        return "[" +
-                "{ \"id\": 1, \"code\":\"LO1\", \"name\": \"Swimming\" }," +
-                "{ \"id\": 2, \"code\":\"LO2\", \"name\": \"Poland\" }," +
-                "{ \"id\": 3, \"code\":\"LO3\", \"name\": \"Forest\" }," +
-                "{ \"id\": 4, \"code\":\"LO4\", \"name\": \"Office\" }," +
-                "{ \"id\": 5, \"code\":\"LO5\", \"name\": \"Swimming pool\" }," +
-                "{ \"id\": 6, \"code\":\"LO6\", \"name\": \"Tribune\" }," +
-                "{ \"id\": 7, \"code\":\"LO7\", \"name\": \"Office\" }," +
-                "{ \"id\": 8, \"code\":\"LO8\", \"name\": \"Garden\" }" +
-                "]";
+    // --------------------------------------------
+    //  dynamic values
+    // --------------------------------------------
+
+    /**
+     * get Dynamic values
+     *
+     * @param body
+     * @return
+     */
+    public static String loadProfessionBean(Body body) {
+        if (body == null || body.getRawBytes().length <= 0) {
+            return null;
+        }
+
+        // body is a searchCriteria
+        CustomObjectMapper mapper = new CustomObjectMapper();
+        mapper.enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING);
+        mapper.enable(DeserializationFeature.READ_ENUMS_USING_TO_STRING);
+        mapper.enable(DeserializationFeature.ACCEPT_EMPTY_ARRAY_AS_NULL_OBJECT);
+
+        SearchCriteria sc = SearchCriteria.of();
+        try {
+            String toBeConverted = new String(body.getRawBytes(), "UTF-8");
+            LOG.debug("convert JSON to Bean : {}", toBeConverted);
+            sc = mapper.readValue(toBeConverted, SearchCriteria.class);
+        } catch (IOException e) {
+            LOG.debug("Error in the mockdatas ! Michael JSON converter failed.");
+            e.printStackTrace();
+        }
+        final String code = (sc.getTerms().get(0)).getValue().toString();
+        return toJson(loadProfession().stream().filter(kv -> kv.getValue().toUpperCase().contains((code))));
     }
 
-    public static String loadProfessionBean() {
+    private static String toJson(Stream s) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        Object[] newList = s.toArray();
+        for (Object kv : newList) {
+            sb.append("{\"id\":" + Integer.toString(new Random().nextInt()) + ", \"code\":\"" + ((KeyValueString) kv).getKey() + "\", \"name\": \"" + ((KeyValueString) kv).getValue() + "\"}," +
+                    "\n");
+        }
+        if (sb.length() > 1) {
+            sb.delete(sb.length() - 2, sb.length());
+        }
+        sb.append("]");
+        LOG.debug(" json = " + sb.toString());
+        return sb.toString();
+    }
+
+    // --------------------------------------------
+    //  static
+    // --------------------------------------------
+    public static String loadLocationJson() {
+        // data for Location
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        sb.append("{ \"id\": 1, \"code\":\"LO1\", \"name\": \"Swimming\" },");
+        sb.append("{ \"id\": 2, \"code\":\"LO2\", \"name\": \"Poland\" },");
+        sb.append("{ \"id\": 3, \"code\":\"LO3\", \"name\": \"Forest\" },");
+        sb.append("{ \"id\": 4, \"code\":\"LO4\", \"name\": \"Office\" },");
+        sb.append("{ \"id\": 5, \"code\":\"LO5\", \"name\": \"Swimming pool\" },");
+        sb.append("{ \"id\": 6, \"code\":\"LO6\", \"name\": \"Tribune\" },");
+        sb.append("{ \"id\": 7, \"code\":\"LO7\", \"name\": \"Office\" },");
+        sb.append("{ \"id\": 8, \"code\":\"LO8\", \"name\": \"Garden\" }");
+        sb.append("]");
+        return sb.toString();
+    }
+
+    public static String loadProfessionJson() {
         // data for Profession
-        return "[" +
-                "{ \"id\": 1, \"code\":\"PR1\", \"name\": \"Swimming\" }," +
-                "{ \"id\": 2, \"code\":\"PR2\", \"name\": \"Politic\" }," +
-                "{ \"id\": 3, \"code\":\"PR3\", \"name\": \"Poet\" }," +
-                "{ \"id\": 4, \"code\":\"PR4\", \"name\": \"Podiatrist\" }," +
-                "{ \"id\": 5, \"code\":\"PR5\", \"name\": \"Swimmer\" }," +
-                "{ \"id\": 6, \"code\":\"PR6\", \"name\": \"Spokesman\" }," +
-                "{ \"id\": 7, \"code\":\"PR7\", \"name\": \"Developer\" }," +
-                "{ \"id\": 8, \"code\":\"PR8\", \"name\": \"Gardener\" }" +
-                "]";
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        sb.append("{ \"id\": 1, \"code\":\"PR1\", \"name\": \"Swimming\" },");
+        sb.append("{ \"id\": 2, \"code\":\"PR2\", \"name\": \"Politic\" },");
+        sb.append("{ \"id\": 3, \"code\":\"PR3\", \"name\": \"Poet\" },");
+        sb.append("{ \"id\": 4, \"code\":\"PR4\", \"name\": \"Podiatrist\" },");
+        sb.append("{ \"id\": 5, \"code\":\"PR5\", \"name\": \"Swimmer\" },");
+        sb.append("{ \"id\": 6, \"code\":\"PR6\", \"name\": \"Spokesman\" },");
+        sb.append("{ \"id\": 7, \"code\":\"PR7\", \"name\": \"Developer\" },");
+        sb.append("{ \"id\": 8, \"code\":\"PR8\", \"name\": \"Gardener\" }");
+        sb.append("]");
+        return sb.toString();
     }
 
     public static List<KeyValueStringLabel> loadLocation() {

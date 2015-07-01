@@ -13,10 +13,12 @@ public class SearchCriteria {
     private final static int DEFAUTL_MAX = -1;
     private final static int DEFAUTL_FIRST = 0;
     int first, max;
-
     private List<Term> terms = new LinkedList<>();
     private List<Relation> relations = new LinkedList<>();
     private HashMap<String, String> values = new HashMap<>();
+
+    SearchCriteria() {
+    }
 
     private SearchCriteria(int first, int max) {
         this.first = first;
@@ -153,7 +155,9 @@ public class SearchCriteria {
     }
 
     public void setItem(String key, String value) {
-        this.values.put(key, value);
+        if (key != null) {
+            this.values.put(key, value);
+        }
     }
 
     public String getItem(String key) {
@@ -178,6 +182,26 @@ public class SearchCriteria {
 
     public List<Term> getTerms() {
         return Collections.unmodifiableList(terms);
+    }
+
+    public HashMap<String, String> getValues() {
+        return values;
+    }
+
+    public void setValues(HashMap<String, String> values) {
+        this.values = values;
+    }
+
+    public void setFirst(int first) {
+        this.first = first;
+    }
+
+    public void setTerms(List<Term> terms) {
+        this.terms = terms;
+    }
+
+    public void setRelations(List<Relation> relations) {
+        this.relations = relations;
     }
 
 

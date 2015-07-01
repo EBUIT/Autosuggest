@@ -11,12 +11,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
 import javafx.util.StringConverter;
 import org.controlsfx.control.textfield.CustomTextField;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import sample.autosuggest.AutoSuggestSearchRestClientMock;
 import sample.combobox.AutoSuggestKeyValueString;
 import sample.combobox.KeyValueString;
@@ -33,9 +31,8 @@ import java.util.stream.Collectors;
 import static framework.bean.search.SearchElementFactory.*;
 
 public class Controller implements Initializable {
+    private final static Logger LOG = LoggerFactory.getLogger(Controller.class);
 
-    @FXML
-    TextFlow textFlow1, textFlow2, textFlow3, textFlow4;
     @FXML
     public ToggleButton toggleBtn;
     @FXML
@@ -69,19 +66,15 @@ public class Controller implements Initializable {
         final List<KeyValueStringLabel> itemsProfession = MockDatas.loadProfession();
 
         // init sample.autosuggest
-        autosuggestLocation.init(searchFunctionParam(itemsLocation), textFieldFormatter, labelItemFormatter);
-        autosuggestProfession.init(searchFunctionParam(itemsProfession), textFieldFormatter, labelItemFormatter);
-        updateGenericAutoSuggest(autosuggestSearch, searchServiceFactory.searchService(ProfessionBean.class), t -> String.format("%s - %s", t.getCode().toString(), t.getName()), t -> String.format("%s - %s", t.getCode().toString(), t.getName()), "code", "name");
-        customTextField.setRight(toggleBtn);
-
-        // test Styled Text
-        String family = "Helvetica";
-        double size = 20;
-        Text text1 = new Text("Po");
-        text1.setFont(Font.font(family, FontWeight.BOLD, size));
-        Text text2 = new Text("int of view");
-        text2.setFont(Font.font(family, size));
-        textFlow1.getChildren().addAll(text1, text2);
+        //    autosuggestLocation.init(searchFunctionParam(itemsLocation), textFieldFormatter, labelItemFormatter);
+        //      autosuggestProfession.init(searchFunctionParam(itemsProfession), textFieldFormatter, labelItemFormatter);
+        updateGenericAutoSuggest(
+                autosuggestSearch,
+                searchServiceFactory.searchService(ProfessionBean.class),
+                t -> String.format("%s - %s", t.getCode().toString(), t.getName()),
+                t -> String.format("%s - %s", t.getCode().toString(), t.getName()),
+                "code", "name");
+        //        customTextField.setRight(toggleBtn);
 
         // bind with Labels
         bind();
@@ -95,8 +88,8 @@ public class Controller implements Initializable {
             String code,
             String name) {
         autoSuggest.init(searchService, txtField, cellField,
-                s -> SearchCriteria.of().likeBegin(code, s),
-                s1 -> SearchCriteria.of().and(notlike(code, s1, Like.LikeType.BEGIN), or(like(code, s1), like(name, s1)))
+                s -> SearchCriteria.of().likeBegin(code, s)
+                //,s1 -> SearchCriteria.of().and(notlike(code, s1, Like.LikeType.BEGIN), or(like(code, s1), like(name, s1)))
         );
     }
 

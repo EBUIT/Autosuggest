@@ -9,6 +9,11 @@ public class Term extends SearchCriteriaNode {
     private String identifier;
     private Object value;
     private String type;
+    private Like.LikeType likeType;
+    private Boolean operator;
+
+    Term() {
+    }
 
     /**
      * The term is defined by an {@code identifier}
@@ -48,6 +53,33 @@ public class Term extends SearchCriteriaNode {
         return value;
     }
 
+    public Boolean getOperator() {
+        return operator;
+    }
+
+    public void setOperator(Boolean operator) {
+        this.operator = operator;
+    }
+
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
+    }
+
+    public void setValue(Object value) {
+        this.value = value;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Like.LikeType getLikeType() {
+        return likeType;
+    }
+
+    public void setLikeType(Like.LikeType likeType) {
+        this.likeType = likeType;
+    }
 
     @Override
     public boolean equals(Object o) {

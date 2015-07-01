@@ -30,10 +30,10 @@ public class Main extends Application {
         // test textflow
         LOG.info(" test TextFlow -- ");
         List<KeyValueTextFlow> list = MockDatas.loadLocationTextFlow();
-        for (KeyValueTextFlow k:list) {
+        for (KeyValueTextFlow k : list) {
             TextFlow tf = k.getValue();
             List<Text> listinside = (List) tf.getChildren();
-            for (Text t:listinside) {
+            for (Text t : listinside) {
                 LOG.info(t.getText());
             }
         }
