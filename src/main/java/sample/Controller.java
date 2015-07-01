@@ -1,14 +1,16 @@
 package sample;
 
-import framework.bean.search.Like;
 import framework.bean.search.SearchCriteria;
 import framework.service.SearchService;
 import framework.service.SearchServiceFactory;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.util.StringConverter;
@@ -16,9 +18,7 @@ import org.controlsfx.control.textfield.CustomTextField;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import sample.autosuggest.AutoSuggestSearchRestClientMock;
-import sample.combobox.AutoSuggestKeyValueString;
-import sample.combobox.KeyValueString;
-import sample.combobox.KeyValueStringLabel;
+import sample.combobox.*;
 import sample.mockserver.MockDatas;
 
 import javax.annotation.Resource;
@@ -27,8 +27,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import static framework.bean.search.SearchElementFactory.*;
 
 public class Controller implements Initializable {
     private final static Logger LOG = LoggerFactory.getLogger(Controller.class);
@@ -47,12 +45,20 @@ public class Controller implements Initializable {
     CustomTextField customTextField;
     // org.fxpart.AutoSuggestFX autoSuggestFX;
 
+    @FXML
+    ComboBox combo;
 
     @Resource
     private SearchServiceFactory searchServiceFactory;
 
     private ObjectProperty<KeyValueStringLabel> dataLocationProperty = new SimpleObjectProperty<>();
     private ObjectProperty<KeyValueStringLabel> dataprofessionProperty = new SimpleObjectProperty<>();
+
+    private final ObservableList strings = FXCollections.observableArrayList("Option 1", "Option 2", "Option 3",
+            "Option 4", "Option 5", "Option 6",
+            "Longer ComboBox item",
+            "Option 7", "Option 8", "Option 9",
+            "Option 10", "Option 12");
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -68,13 +74,16 @@ public class Controller implements Initializable {
         // init sample.autosuggest
         //    autosuggestLocation.init(searchFunctionParam(itemsLocation), textFieldFormatter, labelItemFormatter);
         //      autosuggestProfession.init(searchFunctionParam(itemsProfession), textFieldFormatter, labelItemFormatter);
-        updateGenericAutoSuggest(
-                autosuggestSearch,
-                searchServiceFactory.searchService(ProfessionBean.class),
+        updateGenericAutoSuggest(autosuggestSearch, searchServiceFactory.searchService(ProfessionBean.class),
                 t -> String.format("%s - %s", t.getCode().toString(), t.getName()),
                 t -> String.format("%s - %s", t.getCode().toString(), t.getName()),
                 "code", "name");
         //        customTextField.setRight(toggleBtn);
+
+
+        combo.setItems(strings);
+//        FxUtils.autoCompleteComboBox(combo, FxUtils.AutoCompleteMode.CONTAINING);
+        FxUtils2.autoCompleteComboBox(combo, FxUtils2.AutoCompleteMode.STARTS_WITH);
 
         // bind with Labels
         bind();

@@ -39,10 +39,10 @@ public class Main extends Application {
         }
 
         LOG.info("Start Mock Server");
-        startProxy();
+//        startProxy();
 
         LOG.info("Get Expectations");
-        Expectation.start(Expectation.SCENARIO.MOCK_1COL);
+//        Expectation.start(Expectation.SCENARIO.MOCK_1COL);
 
         LOG.info("Fx loading");
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
