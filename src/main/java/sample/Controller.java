@@ -29,7 +29,7 @@ public class Controller implements Initializable {
     @FXML
     AutoSuggestKeyValueString autosuggestProfession = new AutoSuggestKeyValueString();
     @FXML
-    AutoSuggestSearchRestClientMock<ProfessionBean> autosuggestSearch; // org.fxpart.AutoSuggestFX autoSuggestFX;
+    AutoSuggestSearchRestClientMock<LocationBean> autosuggestSearch; // org.fxpart.AutoSuggestFX autoSuggestFX;
     @FXML
     ComboBox comboFx1, comboFx2;
     @FXML
@@ -43,7 +43,7 @@ public class Controller implements Initializable {
     private ObjectProperty<KeyValueStringLabel> dataprofessionProperty = new SimpleObjectProperty<>();
     private ObjectProperty<KeyValueStringLabel> partDecoDataLocationProperty = new SimpleObjectProperty<>();
 
-    private final ObservableList strings = FXCollections.observableArrayList(MockDatas.loadProfessionStrings());
+    private final ObservableList strings = FXCollections.observableArrayList(MockDatas.loadLocationStrings());
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -53,12 +53,11 @@ public class Controller implements Initializable {
         Main.applicationContext.getAutowireCapableBeanFactory().autowireBean(this);
 
         // datas
-//        final List<KeyValueStringLabel> itemsLocation = MockDatas.loadLocation();
-        final List<KeyValueStringLabel> itemsProfession = MockDatas.loadProfession();
+        final List<KeyValueStringLabel> itemsLocation = MockDatas.loadLocation();
 
         // old combos. KeyValue and SearchRest
-        autosuggestProfession.init(searchFunctionParam(itemsProfession), textFieldFormatter, labelItemFormatter);
-        updateGenericAutoSuggest(autosuggestSearch, searchServiceFactory.searchService(ProfessionBean.class), t -> String.format("%s - %s", t.getCode().toString(), t.getName()), t -> String.format("%s - %s", t.getCode().toString(), t.getName()), "code", "name");
+        autosuggestProfession.init(searchFunctionParam(itemsLocation), textFieldFormatter, labelItemFormatter);
+        updateGenericAutoSuggest(autosuggestSearch, searchServiceFactory.searchService(LocationBean.class), t -> String.format("%s - %s", t.getCode().toString(), t.getName()), t -> String.format("%s - %s", t.getCode().toString(), t.getName()), "code", "name");
 
         // FxUtils combos
         comboFx1.setItems(strings);
@@ -67,15 +66,15 @@ public class Controller implements Initializable {
         FxUtils2.autoCompleteComboBox(comboFx2, FxUtils2.AutoCompleteMode.STARTS_WITH);
 
         //pavel
-        partTextDecoLocation.init(searchFunctionParam(itemsProfession), textFieldFormatter);
+        partTextDecoLocation.init(searchFunctionParam(itemsLocation), textFieldFormatter);
 
     }
 
     public static void updateGenericAutoSuggest(
-            AutoSuggestSearchRestClientMock<ProfessionBean> autoSuggest,
-            SearchService<ProfessionBean> searchService,
-            Function<ProfessionBean, String> txtField,
-            Function<ProfessionBean, String> cellField,
+            AutoSuggestSearchRestClientMock<LocationBean> autoSuggest,
+            SearchService<LocationBean> searchService,
+            Function<LocationBean, String> txtField,
+            Function<LocationBean, String> cellField,
             String code,
             String name) {
         autoSuggest.init(searchService, txtField, cellField,

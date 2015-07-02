@@ -9,8 +9,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.util.Callback;
@@ -35,22 +33,15 @@ public class PartTextDecoComboBox<T> extends ComboBox<T> {
     private static final KeyCodeCombination END = new KeyCodeCombination(KeyCode.END);
 
     private Function<String, List<T>> searchFunction;
-    /*
-    This style applied to AutoSuggestComboBox dropdown list
-     */
-    private static enum DropDownStyle {HIGHLIGHTED, USUAL};
-    /*
-    CSS style class names
-     */
     private static final String HIGHLIGHTED_CLASS = "highlighted-dropdown";
     private static final String USUAL_CLASS = "usual-dropdown";
 
-    public PartTextDecoComboBox(){
+    public PartTextDecoComboBox() {
         setEditable(true);
     }
 
     public void init(Function<String, List<T>> searchFunction,
-                                Function<T, String> textFieldFormatter) {
+                     Function<T, String> textFieldFormatter) {
 
         setVisibleRowCount(10);
         this.searchFunction = searchFunction;
@@ -106,18 +97,10 @@ public class PartTextDecoComboBox<T> extends ComboBox<T> {
                     return;
                 }
 
-                /*
-                list should be instantiated on every key release
-                 */
+                //list should be instantiated on every key release
                 ObservableList<T> list = FXCollections.observableArrayList(searchFunction.apply(term));
 
-                /*
-                On key released dropDown style should be applied
-                 */
-                //PartTextDecoComboBox.this.setCustomCellFactory();
-
                 PartTextDecoComboBox.this.getSelectionModel().clearSelection();
-                //PartTextDecoComboBox.this.setItems(null);
                 PartTextDecoComboBox.this.setItems(list);
                 PartTextDecoComboBox.this.getEditor().setText(term);
                 if (!moveCaretToPos) {
@@ -140,74 +123,69 @@ public class PartTextDecoComboBox<T> extends ComboBox<T> {
         };
     }
 
-    private void setCustomCellFactory(){
+    private void setCustomCellFactory() {
         setCellFactory(new Callback<ListView<T>, ListCell<T>>() {
-                @Override
-                public ListCell<T> call(ListView<T> param) {
-                    final ListCell<T> cell = new ListCell<T>(){
-                        @Override
-                        protected void updateItem(T item, boolean empty) {
-                            super.updateItem(item, empty);
+                           @Override
+                           public ListCell<T> call(ListView<T> param) {
+                               final ListCell<T> cell = new ListCell<T>() {
+                                   @Override
+                                   protected void updateItem(T item, boolean empty) {
+                                       super.updateItem(item, empty);
 
-                            if (item == null || empty) {
-                                setText(null);
-                                setGraphic(null);
-                            }else{
-                                String keyString=(String)((KeyValueStringLabel)item).getKey();
-                                String valueString=((KeyValueStringLabel)item).getValue();
-                                String itemString=keyString+" - "+valueString;
+                                       if (item == null || empty) {
+                                           setText(null);
+                                           setGraphic(null);
+                                       } else {
+                                           String keyString = (String) ((KeyValueStringLabel) item).getKey();
+                                           String valueString = ((KeyValueStringLabel) item).getValue();
+                                           String itemString = keyString + " - " + valueString;
 
-                                String searchString = PartTextDecoComboBox.this.getEditor().getText();
-                                if (searchString.length()!=0){
-                                    Integer searchStringPosition = valueString.indexOf(searchString);
-                                    /*
-                                    itemString contains searchString. It should be split and
-                                    searchString should be highLighted
-                                     */
-                                    if (searchStringPosition>=0){
-                                        String beginString = valueString.substring(0,searchStringPosition);
-                                        String highlightedString = valueString.substring(searchStringPosition,
-                                                searchStringPosition+searchString.length());
-                                        String endString = valueString.substring(
-                                                searchStringPosition+searchString.length());
+                                           String searchString = PartTextDecoComboBox.this.getEditor().getText();
+                                           if (searchString.length() != 0) {
+                                               Integer searchStringPosition = valueString.indexOf(searchString);
 
-                                        TextFlow cellTextFlow = new TextFlow();
+                                               // itemString contains searchString. It should be split and searchString should be highLighted
+                                               if (searchStringPosition >= 0) {
+                                                   String beginString = valueString.substring(0, searchStringPosition);
+                                                   String highlightedString = valueString.substring(searchStringPosition,
+                                                           searchStringPosition + searchString.length());
+                                                   String endString = valueString.substring(
+                                                           searchStringPosition + searchString.length());
 
-                                        Text t = new Text(keyString+" - ");
-                                        t.getStyleClass().add(USUAL_CLASS);
-                                        cellTextFlow.getChildren().add(t);
+                                                   TextFlow cellTextFlow = new TextFlow();
 
-                                        /*
-                                        If I remove this check - the wrong symbol highlighted.
-                                        Looks like bug in Text or TextFlow.
-                                         */
-                                        if (beginString.length()!=0){
-                                            t = new Text(beginString);
-                                            t.getStyleClass().add(USUAL_CLASS);
-                                            cellTextFlow.getChildren().add(t);
-                                        }
+                                                   Text t = new Text(keyString + " - ");
+                                                   t.getStyleClass().add(USUAL_CLASS);
+                                                   cellTextFlow.getChildren().add(t);
 
-                                        t = new Text(highlightedString);
-                                        t.getStyleClass().add(HIGHLIGHTED_CLASS);
-                                        cellTextFlow.getChildren().add(t);
+                                                   // If I remove this check - the wrong symbol highlighted.Looks like bug in Text or TextFlow.
+                                                   if (beginString.length() != 0) {
+                                                       t = new Text(beginString);
+                                                       t.getStyleClass().add(USUAL_CLASS);
+                                                       cellTextFlow.getChildren().add(t);
+                                                   }
 
-                                        t = new Text(endString);
-                                        t.getStyleClass().add(USUAL_CLASS);
-                                        cellTextFlow.getChildren().add(t);
+                                                   t = new Text(highlightedString);
+                                                   t.getStyleClass().add(HIGHLIGHTED_CLASS);
+                                                   cellTextFlow.getChildren().add(t);
 
-                                        setGraphic(cellTextFlow);
-                                    }else{
-                                        setText(itemString);
-                                    }
-                                }else{
-                                    setText(itemString);
-                                }
-                            }
-                        }
-                    };
-                    return cell;
-                }
-            }
+                                                   t = new Text(endString);
+                                                   t.getStyleClass().add(USUAL_CLASS);
+                                                   cellTextFlow.getChildren().add(t);
+
+                                                   setGraphic(cellTextFlow);
+                                               } else {
+                                                   setText(itemString);
+                                               }
+                                           } else {
+                                               setText(itemString);
+                                           }
+                                       }
+                                   }
+                               };
+                               return cell;
+                           }
+                       }
         );
     }
 

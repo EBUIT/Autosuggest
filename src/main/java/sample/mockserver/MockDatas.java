@@ -36,7 +36,7 @@ public class MockDatas {
      * @param body
      * @return
      */
-    public static String loadProfessionBean(Body body) {
+    public static String loadLocationBean(Body body) {
         if (body == null || body.getRawBytes().length <= 0) {
             return null;
         }
@@ -57,7 +57,7 @@ public class MockDatas {
             e.printStackTrace();
         }
         final String code = (sc.getTerms().get(0)).getValue().toString();
-        return toJson(loadProfession().stream().filter(kv -> kv.getValue().toUpperCase().contains((code.toUpperCase()))));
+        return toJson(loadLocation().stream().filter(kv -> kv.getValue().toUpperCase().contains((code.toUpperCase()))));
     }
 
     private static String toJson(Stream s) {
@@ -87,7 +87,7 @@ public class MockDatas {
         // data for Location
         StringBuilder sb = new StringBuilder();
         sb.append("[");
-        sb.append("{ \"id\": 1, \"code\":\"LO1\", \"name\": \"Swimming\" },");
+        sb.append("{ \"id\": 1, \"code\":\"LO1\", \"name\": \"Point of View\" },");
         sb.append("{ \"id\": 2, \"code\":\"LO2\", \"name\": \"Poland\" },");
         sb.append("{ \"id\": 3, \"code\":\"LO3\", \"name\": \"Forest\" },");
         sb.append("{ \"id\": 4, \"code\":\"LO4\", \"name\": \"Office\" },");

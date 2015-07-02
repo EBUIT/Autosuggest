@@ -15,7 +15,7 @@ public class AutosuggestMockCallback implements ExpectationCallback {
 
     @Override
     public HttpResponse handle(HttpRequest httpRequest) {
-        String json = MockDatas.loadProfessionBean(httpRequest.getBody());
+        String json = MockDatas.loadLocationBean(httpRequest.getBody());
         LOG.debug("json POSTed by client : " + json);
         HttpResponse hr = HttpResponse.response().withStatusCode(HttpStatusCode.OK_200.code()).withBody(json);
         LOG.debug("HttpResponse : " + hr.getBodyAsString());

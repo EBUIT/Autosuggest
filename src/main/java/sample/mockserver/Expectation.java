@@ -28,7 +28,7 @@ public class Expectation {
                         .when(
                                 request()
                                         .withMethod("POST")
-                                        .withPath("/rest/profession/framework/search")
+                                        .withPath("/rest/location/framework/search")
                                 , unlimited()
                         )
                         .respond(
@@ -43,7 +43,7 @@ public class Expectation {
                         .when(
                                 request()
                                         .withMethod("POST")
-                                        .withPath("/rest/profession/framework/search")
+                                        .withPath("/rest/location/framework/search")
                                 , unlimited()
                         )
                         .callback(
@@ -58,7 +58,7 @@ public class Expectation {
                         .when(
                                 request()
                                         .withMethod("POST")
-                                        .withPath("/rest/profession/framework/search")
+                                        .withPath("/rest/location/framework/search")
                                 , unlimited()
                         )
                         .callback(
