@@ -36,7 +36,11 @@ public class AutoSuggestComboBox<T> extends ComboBox<T> {
     /*
     This style applied to AutoSuggestComboBox dropdown list
      */
-    private static enum DropDownStyle {HIGHLIGHTED, USUAL};
+    private static enum DropDownStyle {
+        HIGHLIGHTED, USUAL
+    }
+
+    ;
     /*
     CSS style class names
      */
@@ -142,11 +146,10 @@ public class AutoSuggestComboBox<T> extends ComboBox<T> {
                  */
                 String term = AutoSuggestComboBox.this.getEditor().getText();
                 DropDownStyle dropDownStyle = null;
-                if (term!=null){
-                    if (term.length()>0){
+                if (term != null) {
+                    if (term.length() > 0) {
                         dropDownStyle = DropDownStyle.HIGHLIGHTED;
-                    }
-                    else{
+                    } else {
                         dropDownStyle = DropDownStyle.USUAL;
                     }
                 }
@@ -168,10 +171,9 @@ public class AutoSuggestComboBox<T> extends ComboBox<T> {
 
                             //Apply style
                             getStyleClass().removeAll(HIGHLIGHTED_CLASS, USUAL_CLASS);
-                            if (styleToApply.equals(DropDownStyle.HIGHLIGHTED)){
+                            if (styleToApply.equals(DropDownStyle.HIGHLIGHTED)) {
                                 getStyleClass().add(HIGHLIGHTED_CLASS);
-                            }
-                            else if (styleToApply.equals(DropDownStyle.USUAL)){
+                            } else if (styleToApply.equals(DropDownStyle.USUAL)) {
                                 getStyleClass().add(USUAL_CLASS);
                             }
 

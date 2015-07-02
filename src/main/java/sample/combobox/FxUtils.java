@@ -32,6 +32,8 @@ public class FxUtils {
 
             @Override
             public void handle(KeyEvent event) {
+
+                // key triggers actions
                 if (event.getCode() == KeyCode.UP) {
                     caretPos = -1;
                     moveCaret(comboBox.getEditor().getText().length());
@@ -51,28 +53,31 @@ public class FxUtils {
                     caretPos = comboBox.getEditor().getCaretPosition();
                 }
 
+                // key moving caret
                 if (event.getCode() == KeyCode.RIGHT || event.getCode() == KeyCode.LEFT
                         || event.isControlDown() || event.getCode() == KeyCode.HOME
                         || event.getCode() == KeyCode.END || event.getCode() == KeyCode.TAB) {
                     return;
                 }
 
+                // datas filtering
+                final String editor = comboBox.getEditor().getText();
                 ObservableList<T> list = FXCollections.observableArrayList();
                 for (T aData : data) {
-                    if (mode.equals(AutoCompleteMode.STARTS_WITH) && aData.toString().toLowerCase().startsWith(comboBox.getEditor().getText().toLowerCase())) {
+                    if (mode.equals(AutoCompleteMode.STARTS_WITH) && aData.toString().toLowerCase().startsWith(editor.toLowerCase())) {
                         list.add(aData);
-                    } else if (mode.equals(AutoCompleteMode.CONTAINING) && aData.toString().toLowerCase().contains(comboBox.getEditor().getText().toLowerCase())) {
+                    } else if (mode.equals(AutoCompleteMode.CONTAINING) && aData.toString().toLowerCase().contains(editor.toLowerCase())) {
                         list.add(aData);
                     }
                 }
-                String t = comboBox.getEditor().getText();
-
                 comboBox.setItems(list);
-                comboBox.getEditor().setText(t);
+
+                // position of caret
+                comboBox.getEditor().setText(editor);
                 if (!moveCaretToPos) {
                     caretPos = -1;
                 }
-                moveCaret(t.length());
+                moveCaret(editor.length());
                 if (!list.isEmpty()) {
                     comboBox.show();
                 }
