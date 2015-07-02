@@ -66,20 +66,11 @@ public class Controller implements Initializable {
         FxUtils2.autoCompleteComboBox(comboFx2, FxUtils2.AutoCompleteMode.STARTS_WITH);
 
         //pavel
-        partTextDecoLocation.init(textFieldFormatter);
-
+        partTextDecoLocation.init(o -> new MockDatas().loadLocation(), textFieldFormatter);
     }
 
-    public static void updateGenericAutoSuggest(
-            AutoSuggestSearchRestClientMock<LocationBean> autoSuggest,
-            SearchService<LocationBean> searchService,
-            Function<LocationBean, String> txtField,
-            Function<LocationBean, String> cellField,
-            String code,
-            String name) {
-        autoSuggest.init(searchService, txtField, cellField,
-                s -> SearchCriteria.of().likeBegin(code, s)
-                //,s1 -> SearchCriteria.of().and(notlike(code, s1, Like.LikeType.BEGIN), or(like(code, s1), like(name, s1)))
+    public static void updateGenericAutoSuggest(AutoSuggestSearchRestClientMock<LocationBean> autoSuggest, SearchService<LocationBean> searchService, Function<LocationBean, String> txtField, Function<LocationBean, String> cellField, String code, String name) {
+        autoSuggest.init(searchService, txtField, cellField, s -> SearchCriteria.of().likeBegin(code, s)
         );
     }
 

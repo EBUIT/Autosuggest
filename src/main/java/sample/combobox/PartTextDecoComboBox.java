@@ -15,7 +15,6 @@ import javafx.util.Callback;
 import javafx.util.StringConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import sample.mockserver.MockDatas;
 
 import java.util.Collection;
 import java.util.List;
@@ -43,27 +42,29 @@ public class PartTextDecoComboBox<T> extends ComboBox<T> {
     private static final String USUAL_CLASS = "usual-dropdown";
 
     private Function<String, List<KeyValueString>> searchFunction;
+    private Function<String, List<KeyValueString>> datas;
 
     public PartTextDecoComboBox() {
         setEditable(true);
     }
 
+    public void setDatas(Function<String, List<KeyValueString>> datas) {
+        this.datas = datas;
+    }
+
+    // TODO call a datasource
     public List<KeyValueString> getDatas() {
-        // TODO call a datasource
-        return new MockDatas().loadLocation();
+        return datas.apply(null);
     }
 
-    public void init(Function<T, String> textFieldFormatter) {
-        init();
-        this.searchFunction = term -> getDatas().stream().filter(item -> item.getValue().contains(term == null ? "" : term)).collect(Collectors.toList());
-        setTextFieldFormatter(textFieldFormatter);
-    }
-
-    public void init() {
+    public void init(Function<String, List<KeyValueString>> datas, Function<T, String> textFieldFormatter) {
         setVisibleRowCount(10);
         setCustomCellFactory();
         addEventHandler(KeyEvent.KEY_PRESSED, t -> this.hide());
         addEventHandler(KeyEvent.KEY_RELEASED, createKeyReleaseEventHandler());
+        this.datas = datas;
+        this.searchFunction = term -> this.getDatas().stream().filter(item -> item.getValue().contains(term == null ? "" : term)).collect(Collectors.toList());
+        setTextFieldFormatter(textFieldFormatter);
     }
 
     protected EventHandler<KeyEvent> createKeyReleaseEventHandler() {
@@ -104,7 +105,6 @@ public class PartTextDecoComboBox<T> extends ComboBox<T> {
                 }
 
                 // datas filtering
-//                ObservableList<T> list = FXCollections.observableArrayList((Collection<? extends T>) search().apply(term));
                 ObservableList<T> list = FXCollections.observableArrayList((Collection<? extends T>) searchFunction.apply(term));
                 PartTextDecoComboBox.this.setItems(list);
 
