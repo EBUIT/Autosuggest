@@ -6,9 +6,10 @@ package sample.combobox;
 public interface KeyValueString extends KeyValueStringLabel<String> {
 
     String getValue();
+    void setValue(String s);
 
     String getKey();
 
     int getRandom();
-
+    void setRandom(int r);
 }

@@ -110,6 +110,19 @@ public class MockDatas {
         return Arrays.asList(lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8);
     }
 
+    public static List<KeyValueString> loadStaticLocation() {
+        // data for Location
+        KeyValueString lb1 = new KeyValueStringImpl("LO1" , "Point of View");
+        KeyValueString lb2 = new KeyValueStringImpl("LO2" , "Poland");
+        KeyValueString lb3 = new KeyValueStringImpl("LO3" , "Forest");
+        KeyValueString lb4 = new KeyValueStringImpl("LO4" , "Office");
+        KeyValueString lb5 = new KeyValueStringImpl("LO5" , "Swimming pool");
+        KeyValueString lb6 = new KeyValueStringImpl("LO6" , "Tribune");
+        KeyValueString lb7 = new KeyValueStringImpl("LO7" , "Office");
+        KeyValueString lb8 = new KeyValueStringImpl("LO8" , "Garden");
+        return Arrays.asList(lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8);
+    }
+
     public static Collection<?> loadLocationStrings() {
         return FXCollections.observableArrayList("Point of View", "Poland", "Forest", "Office", "Swimming pool", "Tribune", "Office", "Garden");
     }

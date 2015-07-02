@@ -42,25 +42,26 @@ public class PartTextDecoComboBox<T> extends ComboBox<T> {
     private static final String HIGHLIGHTED_CLASS = "highlighted-dropdown";
     private static final String USUAL_CLASS = "usual-dropdown";
 
-    private Function<String, List<T>> searchFunction;
+    private Function<String, List<KeyValueString>> searchFunction;
 
     public PartTextDecoComboBox() {
         setEditable(true);
     }
 
-    // framework.search function for combo
-    private Function<String, List<KeyValueString>> search() {
-        // datas
-        List<KeyValueString> itemsLocation = new MockDatas().loadLocation();
-        return term -> itemsLocation.stream().filter(item -> item.getValue().contains(term == null ? "" : term)).collect(Collectors.toList());
+    public List<KeyValueString> getDatas() {
+        // TODO call a datasource
+        return new MockDatas().loadLocation();
     }
 
-    public void init(Function<String, List<T>> searchFunction, Function<T, String> textFieldFormatter) {
-//        this.searchFunction = search();
-        setVisibleRowCount(10);
+    public void init(Function<T, String> textFieldFormatter) {
+        init();
+        this.searchFunction = term -> getDatas().stream().filter(item -> item.getValue().contains(term == null ? "" : term)).collect(Collectors.toList());
         setTextFieldFormatter(textFieldFormatter);
-        setCustomCellFactory();
+    }
 
+    public void init() {
+        setVisibleRowCount(10);
+        setCustomCellFactory();
         addEventHandler(KeyEvent.KEY_PRESSED, t -> this.hide());
         addEventHandler(KeyEvent.KEY_RELEASED, createKeyReleaseEventHandler());
     }
@@ -103,9 +104,8 @@ public class PartTextDecoComboBox<T> extends ComboBox<T> {
                 }
 
                 // datas filtering
-//                ObservableList<T> list = FXCollections.observableArrayList(searchFunction.apply(term));
-                ObservableList<T> list = FXCollections.observableArrayList((Collection<? extends T>) search().apply(term));
-
+//                ObservableList<T> list = FXCollections.observableArrayList((Collection<? extends T>) search().apply(term));
+                ObservableList<T> list = FXCollections.observableArrayList((Collection<? extends T>) searchFunction.apply(term));
                 PartTextDecoComboBox.this.setItems(list);
 
                 if (!moveCaretToPos) {
@@ -132,6 +132,7 @@ public class PartTextDecoComboBox<T> extends ComboBox<T> {
         setCellFactory(new Callback<ListView<T>, ListCell<T>>() {
                            @Override
                            public ListCell<T> call(ListView<T> param) {
+
                                final ListCell<T> cell = new ListCell<T>() {
                                    @Override
                                    protected void updateItem(T item, boolean empty) {

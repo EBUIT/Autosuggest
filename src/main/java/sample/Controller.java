@@ -18,7 +18,6 @@ import sample.mockserver.MockDatas;
 
 import javax.annotation.Resource;
 import java.net.URL;
-import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.Function;
@@ -67,7 +66,8 @@ public class Controller implements Initializable {
         FxUtils2.autoCompleteComboBox(comboFx2, FxUtils2.AutoCompleteMode.STARTS_WITH);
 
         //pavel
-        partTextDecoLocation.init(searchFunction(), textFieldFormatter);
+        partTextDecoLocation.init(textFieldFormatter);
+
     }
 
     public static void updateGenericAutoSuggest(
@@ -81,13 +81,6 @@ public class Controller implements Initializable {
                 s -> SearchCriteria.of().likeBegin(code, s)
                 //,s1 -> SearchCriteria.of().and(notlike(code, s1, Like.LikeType.BEGIN), or(like(code, s1), like(name, s1)))
         );
-    }
-
-    // framework.search function for combo
-    private Function<String, List<KeyValueString>> searchFunction() {
-        // datas
-        List<KeyValueString> itemsLocation = new MockDatas().loadLocation();
-        return term -> itemsLocation.stream().filter(item -> item.getValue().contains(term == null ? "" : term)).collect(Collectors.toList());
     }
 
     // framework.search function for combo

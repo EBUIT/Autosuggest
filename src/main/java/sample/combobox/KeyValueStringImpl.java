@@ -22,6 +22,11 @@ public class KeyValueStringImpl implements KeyValueString {
     }
 
     @Override
+    public void setValue(String s) {
+        this.value = s;
+    }
+
+    @Override
     public String getKey() {
         return key;
     }
@@ -31,4 +36,8 @@ public class KeyValueStringImpl implements KeyValueString {
         return this.random;
     }
 
+    @Override
+    public void setRandom(int r) {
+        this.random = r;
+    }
 }
