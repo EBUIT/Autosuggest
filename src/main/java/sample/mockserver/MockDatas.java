@@ -4,14 +4,12 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import framework.bean.search.SearchCriteria;
 import javafx.collections.FXCollections;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
 import org.mockserver.model.Body;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import sample.combobox.*;
+import sample.combobox.KeyValueString;
+import sample.combobox.KeyValueStringImpl;
+import sample.combobox.KeyValueStringLabel;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -57,7 +55,7 @@ public class MockDatas {
             e.printStackTrace();
         }
         final String code = (sc.getTerms().get(0)).getValue().toString();
-        return toJson(loadLocation().stream().filter(kv -> kv.getValue().toUpperCase().contains((code.toUpperCase()))));
+        return toJson(new MockDatas().loadLocation().stream().filter(kv -> kv.getValue().toUpperCase().contains((code.toUpperCase()))));
     }
 
     private static String toJson(Stream s) {
@@ -99,36 +97,16 @@ public class MockDatas {
         return sb.toString();
     }
 
-    public static List<KeyValueStringLabel> loadLocation() {
+    public List<KeyValueString> loadLocation() {
         // data for Location
-        KeyValueString lb1 = new KeyValueStringImpl("LO1", "Point of View");
-        KeyValueString lb2 = new KeyValueStringImpl("LO2", "Poland");
-        KeyValueString lb3 = new KeyValueStringImpl("LO3", "Forest");
-        KeyValueString lb4 = new KeyValueStringImpl("LO4", "Office");
-        KeyValueString lb5 = new KeyValueStringImpl("LO5", "Swimming pool");
-        KeyValueString lb6 = new KeyValueStringImpl("LO6", "Tribune");
-        KeyValueString lb7 = new KeyValueStringImpl("LO7", "Office");
-        KeyValueString lb8 = new KeyValueStringImpl("LO8", "Garden");
-        return Arrays.asList(lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8);
-    }
-
-    public static List<KeyValueTextFlow> loadLocationTextFlow() {
-        // data for Location
-        String family = "Helvetica";
-        double size = 20;
-        Text text1 = new Text("Po");
-        text1.setFont(Font.font(family, FontWeight.BOLD, size));
-        Text text2 = new Text("int of view");
-        text2.setFont(Font.font(family, size));
-
-        KeyValueTextFlow lb1 = new KeyValueTextFlowImpl("LO1", new TextFlow(text1, text2));
-        KeyValueTextFlow lb2 = new KeyValueTextFlowImpl("LO2", new TextFlow(new Text("Poland")));
-        KeyValueTextFlow lb3 = new KeyValueTextFlowImpl("LO3", new TextFlow(new Text("Forest")));
-        KeyValueTextFlow lb4 = new KeyValueTextFlowImpl("LO4", new TextFlow(new Text("Office")));
-        KeyValueTextFlow lb5 = new KeyValueTextFlowImpl("LO5", new TextFlow(new Text("Swimming pool")));
-        KeyValueTextFlow lb6 = new KeyValueTextFlowImpl("LO6", new TextFlow(new Text("Tribune")));
-        KeyValueTextFlow lb7 = new KeyValueTextFlowImpl("LO7", new TextFlow(new Text("Office")));
-        KeyValueTextFlow lb8 = new KeyValueTextFlowImpl("LO8", new TextFlow(new Text("Garden")));
+        KeyValueString lb1 = new KeyValueStringImpl("LO1" , "Point of View");
+        KeyValueString lb2 = new KeyValueStringImpl("LO2" , "Poland");
+        KeyValueString lb3 = new KeyValueStringImpl("LO3" , "Forest");
+        KeyValueString lb4 = new KeyValueStringImpl("LO4" , "Office");
+        KeyValueString lb5 = new KeyValueStringImpl("LO5" , "Swimming pool");
+        KeyValueString lb6 = new KeyValueStringImpl("LO6" , "Tribune");
+        KeyValueString lb7 = new KeyValueStringImpl("LO7" , "Office");
+        KeyValueString lb8 = new KeyValueStringImpl("LO8" , "Garden");
         return Arrays.asList(lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8);
     }
 

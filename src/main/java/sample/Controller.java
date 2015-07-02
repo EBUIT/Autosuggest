@@ -18,6 +18,7 @@ import sample.mockserver.MockDatas;
 
 import javax.annotation.Resource;
 import java.net.URL;
+import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.Function;
@@ -53,7 +54,7 @@ public class Controller implements Initializable {
         Main.applicationContext.getAutowireCapableBeanFactory().autowireBean(this);
 
         // datas
-        final List<KeyValueStringLabel> itemsLocation = MockDatas.loadLocation();
+        final List<KeyValueString> itemsLocation = new MockDatas().loadLocation();
 
         // old combos. KeyValue and SearchRest
         autosuggestProfession.init(searchFunctionParam(itemsLocation), textFieldFormatter, labelItemFormatter);
@@ -66,8 +67,7 @@ public class Controller implements Initializable {
         FxUtils2.autoCompleteComboBox(comboFx2, FxUtils2.AutoCompleteMode.STARTS_WITH);
 
         //pavel
-        partTextDecoLocation.init(searchFunctionParam(itemsLocation), textFieldFormatter);
-
+        partTextDecoLocation.init(searchFunction(), textFieldFormatter);
     }
 
     public static void updateGenericAutoSuggest(
@@ -83,8 +83,15 @@ public class Controller implements Initializable {
         );
     }
 
-    // framework.search function for this combo
-    private Function<String, List<KeyValueStringLabel>> searchFunctionParam(List<KeyValueStringLabel> items) {
+    // framework.search function for combo
+    private Function<String, List<KeyValueString>> searchFunction() {
+        // datas
+        List<KeyValueString> itemsLocation = new MockDatas().loadLocation();
+        return term -> itemsLocation.stream().filter(item -> item.getValue().contains(term == null ? "" : term)).collect(Collectors.toList());
+    }
+
+    // framework.search function for combo
+    private Function<String, List<KeyValueStringLabel>> searchFunctionParam(List<KeyValueString> items) {
         return term -> items.stream().filter(item -> item.getValue().contains(term == null ? "" : term)).collect(Collectors.toList());
     }
 

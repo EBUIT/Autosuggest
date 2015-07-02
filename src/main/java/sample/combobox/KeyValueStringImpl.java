@@ -1,15 +1,19 @@
 package sample.combobox;
 
+import java.util.Random;
+
 /**
  * Created by laurent on 11.02.2015.
  */
 public class KeyValueStringImpl implements KeyValueString {
     private String value;
     private String key;
+    private int random;
 
     public KeyValueStringImpl(String key, String value) {
         this.value = value;
         this.key = key;
+        this.random = new Random().nextInt();
     }
 
     @Override
@@ -21,4 +25,10 @@ public class KeyValueStringImpl implements KeyValueString {
     public String getKey() {
         return key;
     }
+
+    @Override
+    public int getRandom() {
+        return this.random;
+    }
+
 }
