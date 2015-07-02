@@ -41,6 +41,8 @@ public class PartTextDecoComboBox<T> extends ComboBox<T> {
     private static final String HIGHLIGHTED_CLASS = "highlighted-dropdown";
     private static final String USUAL_CLASS = "usual-dropdown";
 
+    private String searchString;
+
     private Function<String, List<KeyValueString>> searchFunction;
     private Function<String, List<KeyValueString>> datas;
 
@@ -104,14 +106,17 @@ public class PartTextDecoComboBox<T> extends ComboBox<T> {
                     return;
                 }
 
+                searchString = PartTextDecoComboBox.this.getEditor().getText();
+                int searchStringLength = searchString.length();
+
                 // datas filtering
-                ObservableList<T> list = FXCollections.observableArrayList((Collection<? extends T>) searchFunction.apply(term));
+                ObservableList<T> list = FXCollections.observableArrayList((Collection<? extends T>) searchFunction.apply(searchString));
                 PartTextDecoComboBox.this.setItems(list);
 
                 if (!moveCaretToPos) {
                     caretPos = -1;
                 }
-                moveCaret(termLength);
+                moveCaret(searchStringLength);
                 if (!list.isEmpty()) {
                     PartTextDecoComboBox.this.show();
                 }
@@ -144,7 +149,6 @@ public class PartTextDecoComboBox<T> extends ComboBox<T> {
                                            String keyString = (String) ((KeyValueStringLabel) item).getKey();
                                            String valueString = ((KeyValueStringLabel) item).getValue();
                                            String itemString = keyString + " - " + valueString;
-                                           String searchString = PartTextDecoComboBox.this.getEditor().getText();
                                            if (searchString.length() != 0) {
                                                Integer searchStringPosition = valueString.indexOf(searchString);
 
