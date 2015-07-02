@@ -3,7 +3,6 @@ package sample;
 import framework.bean.search.SearchCriteria;
 import framework.service.SearchService;
 import framework.service.SearchServiceFactory;
-import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -11,10 +10,6 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ToggleButton;
-import javafx.util.StringConverter;
-import org.controlsfx.control.textfield.CustomTextField;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import sample.autosuggest.AutoSuggestSearchRestClientMock;
@@ -32,21 +27,11 @@ public class Controller implements Initializable {
     private final static Logger LOG = LoggerFactory.getLogger(Controller.class);
 
     @FXML
-    public ToggleButton toggleBtn;
-    @FXML
-    Label dataLabelLocation, dataLabelProfession, dataLabelSearch, dataLabelTextViewList, dataLabelLocationPartDeco;
-    @FXML
-    AutoSuggestKeyValueString autosuggestLocation = new AutoSuggestKeyValueString();
-    @FXML
     AutoSuggestKeyValueString autosuggestProfession = new AutoSuggestKeyValueString();
     @FXML
-    AutoSuggestSearchRestClientMock<ProfessionBean> autosuggestSearch;
+    AutoSuggestSearchRestClientMock<ProfessionBean> autosuggestSearch; // org.fxpart.AutoSuggestFX autoSuggestFX;
     @FXML
-    CustomTextField customTextField;
-    // org.fxpart.AutoSuggestFX autoSuggestFX;
-
-    @FXML
-    ComboBox combo;
+    ComboBox comboFx1, comboFx2;
     @FXML
     PartTextDecoComboBox partTextDecoLocation;
 
@@ -58,11 +43,7 @@ public class Controller implements Initializable {
     private ObjectProperty<KeyValueStringLabel> dataprofessionProperty = new SimpleObjectProperty<>();
     private ObjectProperty<KeyValueStringLabel> partDecoDataLocationProperty = new SimpleObjectProperty<>();
 
-    private final ObservableList strings = FXCollections.observableArrayList("Option 1", "Option 2", "Option 3",
-            "Option 4", "Option 5", "Option 6",
-            "Longer ComboBox item",
-            "Option 7", "Option 8", "Option 9",
-            "Option 10", "Option 12");
+    private final ObservableList strings = FXCollections.observableArrayList(MockDatas.loadProfessionStrings());
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -72,29 +53,22 @@ public class Controller implements Initializable {
         Main.applicationContext.getAutowireCapableBeanFactory().autowireBean(this);
 
         // datas
-        final List<KeyValueStringLabel> itemsLocation = MockDatas.loadLocation();
+//        final List<KeyValueStringLabel> itemsLocation = MockDatas.loadLocation();
         final List<KeyValueStringLabel> itemsProfession = MockDatas.loadProfession();
 
-        // init sample.autosuggest
-        //    autosuggestLocation.init(searchFunctionParam(itemsLocation), textFieldFormatter, labelItemFormatter);
-        //      autosuggestProfession.init(searchFunctionParam(itemsProfession), textFieldFormatter, labelItemFormatter);
-        updateGenericAutoSuggest(autosuggestSearch, searchServiceFactory.searchService(ProfessionBean.class),
-                t -> String.format("%s - %s", t.getCode().toString(), t.getName()),
-                t -> String.format("%s - %s", t.getCode().toString(), t.getName()),
-                "code", "name");
-        //        customTextField.setRight(toggleBtn);
+        // old combos. KeyValue and SearchRest
+        autosuggestProfession.init(searchFunctionParam(itemsProfession), textFieldFormatter, labelItemFormatter);
+        updateGenericAutoSuggest(autosuggestSearch, searchServiceFactory.searchService(ProfessionBean.class), t -> String.format("%s - %s", t.getCode().toString(), t.getName()), t -> String.format("%s - %s", t.getCode().toString(), t.getName()), "code", "name");
 
+        // FxUtils combos
+        comboFx1.setItems(strings);
+        comboFx2.setItems(strings);
+        FxUtils.autoCompleteComboBox(comboFx1, FxUtils.AutoCompleteMode.CONTAINING);
+        FxUtils2.autoCompleteComboBox(comboFx2, FxUtils2.AutoCompleteMode.STARTS_WITH);
 
-        combo.setItems(strings);
-//        FxUtils.autoCompleteComboBox(combo, FxUtils.AutoCompleteMode.CONTAINING);
-        FxUtils2.autoCompleteComboBox(combo, FxUtils2.AutoCompleteMode.STARTS_WITH);
+        //pavel
+        partTextDecoLocation.init(searchFunctionParam(itemsProfession), textFieldFormatter);
 
-        partTextDecoLocation.init(searchFunctionParam(itemsLocation),
-                textFieldFormatter
-        );
-
-        // bind with Labels
-        bind();
     }
 
     public static void updateGenericAutoSuggest(
@@ -108,47 +82,6 @@ public class Controller implements Initializable {
                 s -> SearchCriteria.of().likeBegin(code, s)
                 //,s1 -> SearchCriteria.of().and(notlike(code, s1, Like.LikeType.BEGIN), or(like(code, s1), like(name, s1)))
         );
-    }
-
-    private void bind() {
-        autosuggestLocation.valueProperty().bindBidirectional(dataLocationProperty);
-        Bindings.bindBidirectional(dataLabelLocation.textProperty(), dataLocationProperty, new StringConverter<KeyValueStringLabel>() {
-            @Override
-            public String toString(KeyValueStringLabel object) {
-                return object == null ? "No Value Selected" : object.getValue();
-            }
-
-            @Override
-            public KeyValueString fromString(String string) {
-                throw new UnsupportedOperationException("Converter not implemented");
-            }
-        });
-        autosuggestProfession.valueProperty().bindBidirectional(dataprofessionProperty);
-        Bindings.bindBidirectional(dataLabelProfession.textProperty(), dataprofessionProperty, new StringConverter<KeyValueStringLabel>() {
-            @Override
-            public String toString(KeyValueStringLabel object) {
-                return object == null ? "No Value Selected" : object.getValue();
-            }
-
-            @Override
-            public KeyValueString fromString(String string) {
-                throw new UnsupportedOperationException("Converter not implemented");
-            }
-        });
-        partTextDecoLocation.valueProperty().bindBidirectional(partDecoDataLocationProperty);
-        Bindings.bindBidirectional(dataLabelLocationPartDeco.textProperty(),
-                partDecoDataLocationProperty,
-                new StringConverter<KeyValueStringLabel>() {
-                    @Override
-                    public String toString(KeyValueStringLabel object) {
-                        return object == null ? "No Value Selected" : object.getValue();
-                    }
-
-                    @Override
-                    public KeyValueString fromString(String string) {
-                        throw new UnsupportedOperationException("Converter not implemented");
-                    }
-                });
     }
 
     // framework.search function for this combo

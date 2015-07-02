@@ -3,44 +3,26 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import sample.autosuggest.AutoSuggestSearchRestClientMock?>
+<?import sample.combobox.AutoSuggestKeyValueString?>
 <?import sample.combobox.PartTextDecoComboBox?>
-
 <GridPane alignment="center" hgap="10" prefHeight="441.0" prefWidth="924.0" stylesheets="@darktheme.css" vgap="10"
           xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
 
-    <ToggleButton fx:id="toggleBtn" maxHeight="16.0" maxWidth="16.0" minHeight="16.0" minWidth="16.0"
-                  mnemonicParsing="false" prefHeight="16.0" prefWidth="16.0" styleClass="star-button"
-                  stylesheets="/sample/toggle.css" text="" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-
-    <Label styleClass="table-view" text="Combo Location" textFill="#b21b1b" GridPane.columnIndex="1"
+     <Label styleClass="table-view" text="Old ASKeyValue Combo Profession" GridPane.columnIndex="1"
            GridPane.rowIndex="2"/>
-    <Label styleClass="table-view" text="Combo Profession" GridPane.columnIndex="2" GridPane.rowIndex="2"/>
-    <Label styleClass="table-view" text="Profession ASRestSearch" GridPane.columnIndex="3" GridPane.rowIndex="2"/>
-    <Label styleClass="table-view" text="TextView ListView" GridPane.columnIndex="4" GridPane.rowIndex="2"/>
+    <Label styleClass="table-view" text="Old ASSearchRest Profession" GridPane.columnIndex="2" GridPane.rowIndex="2"/>
+    <Label styleClass="table-view" text="Simple Combo FxUtil 1" GridPane.columnIndex="3" GridPane.rowIndex="2"/>
+    <Label styleClass="table-view" text="Simple Combo FxUtil 2" GridPane.columnIndex="4" GridPane.rowIndex="2"/>
     <Label styleClass="table-view" text="Combo Location" GridPane.columnIndex="5" GridPane.rowIndex="2"/>
 
-    <!--    <AutoSuggestKeyValueString fx:id="autosuggestLocation" styleClass="menu" GridPane.columnIndex="1"
-                                   GridPane.rowIndex="3" stylesheets="@autosuggest.css"/>
-        <AutoSuggestKeyValueString fx:id="autosuggestProfession" styleClass="column-header" GridPane.columnIndex="2"
-                                   GridPane.rowIndex="3" stylesheets="@autosuggest.css"/>-->
+    <AutoSuggestKeyValueString fx:id="autosuggestProfession" styleClass="column-header" GridPane.columnIndex="1"
+                               GridPane.rowIndex="3" stylesheets="@autosuggest.css"/>
     <AutoSuggestSearchRestClientMock fx:id="autosuggestSearch" styleClass="table-row-cell"
-                                     stylesheets="@autosuggest.css" GridPane.columnIndex="3" GridPane.rowIndex="3"/>
-    <!--    <CustomTextField fx:id="customTextField" styleClass="filler" GridPane.columnIndex="4" GridPane.rowIndex="3"/>-->
-
-    <ComboBox fx:id="combo" prefHeight="25.0" prefWidth="283.0" GridPane.columnIndex="1"/>
-
-    <PartTextDecoComboBox fx:id="partTextDecoLocation" GridPane.columnIndex="5"
-                          GridPane.rowIndex="3" stylesheets="@autosuggest.css"/>
-
-    <Label fx:id="dataLabelLocation" styleClass="context-menu" text="TEST" textFill="#2d9aab" GridPane.columnIndex="1"
-           GridPane.rowIndex="4"/>
-    <Label fx:id="dataLabelProfession" styleClass="context-menu" text="" GridPane.columnIndex="2"
-           GridPane.rowIndex="4"/>
-    <Label fx:id="dataLabelSearch" styleClass="context-menu" text="" GridPane.columnIndex="3" GridPane.rowIndex="4"/>
-    <Label fx:id="dataLabelTextViewList" styleClass="context-menu" text="" GridPane.columnIndex="4"
-           GridPane.rowIndex="4"/>
-    <Label fx:id="dataLabelLocationPartDeco" styleClass="context-menu" text="" GridPane.columnIndex="5"
-           GridPane.rowIndex="4"/>
+                                     stylesheets="@autosuggest.css" GridPane.columnIndex="2" GridPane.rowIndex="3"/>
+    <ComboBox fx:id="comboFx1" prefHeight="25.0" prefWidth="283.0" GridPane.columnIndex="3" GridPane.rowIndex="3"/>
+    <ComboBox fx:id="comboFx2" prefHeight="25.0" prefWidth="283.0" GridPane.columnIndex="4" GridPane.rowIndex="3"/>
+    <PartTextDecoComboBox fx:id="partTextDecoLocation" GridPane.columnIndex="5" GridPane.rowIndex="3"
+                          stylesheets="@autosuggest.css"/>
 
     <columnConstraints>
         <ColumnConstraints maxWidth="216.0" minWidth="10.0" prefWidth="45.0"/>

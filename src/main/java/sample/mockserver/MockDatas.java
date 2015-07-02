@@ -3,6 +3,7 @@ package sample.mockserver;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import framework.bean.search.SearchCriteria;
+import javafx.collections.FXCollections;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -14,6 +15,7 @@ import sample.combobox.*;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Stream;
@@ -77,6 +79,10 @@ public class MockDatas {
     // --------------------------------------------
     //  static
     // --------------------------------------------
+
+    // ----------
+    // LOCATION
+    // ----------
     public static String loadLocationJson() {
         // data for Location
         StringBuilder sb = new StringBuilder();
@@ -89,22 +95,6 @@ public class MockDatas {
         sb.append("{ \"id\": 6, \"code\":\"LO6\", \"name\": \"Tribune\" },");
         sb.append("{ \"id\": 7, \"code\":\"LO7\", \"name\": \"Office\" },");
         sb.append("{ \"id\": 8, \"code\":\"LO8\", \"name\": \"Garden\" }");
-        sb.append("]");
-        return sb.toString();
-    }
-
-    public static String loadProfessionJson() {
-        // data for Profession
-        StringBuilder sb = new StringBuilder();
-        sb.append("[");
-        sb.append("{ \"id\": 1, \"code\":\"PR1\", \"name\": \"Swimming\" },");
-        sb.append("{ \"id\": 2, \"code\":\"PR2\", \"name\": \"Politic\" },");
-        sb.append("{ \"id\": 3, \"code\":\"PR3\", \"name\": \"Poet\" },");
-        sb.append("{ \"id\": 4, \"code\":\"PR4\", \"name\": \"Podiatrist\" },");
-        sb.append("{ \"id\": 5, \"code\":\"PR5\", \"name\": \"Swimmer\" },");
-        sb.append("{ \"id\": 6, \"code\":\"PR6\", \"name\": \"Spokesman\" },");
-        sb.append("{ \"id\": 7, \"code\":\"PR7\", \"name\": \"Developer\" },");
-        sb.append("{ \"id\": 8, \"code\":\"PR8\", \"name\": \"Gardener\" }");
         sb.append("]");
         return sb.toString();
     }
@@ -142,6 +132,13 @@ public class MockDatas {
         return Arrays.asList(lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8);
     }
 
+    public static Collection<?> loadLocationStrings() {
+        return FXCollections.observableArrayList("Point of View", "Poland", "Forest", "Office", "Swimming pool", "Tribune", "Office", "Garden");
+    }
+
+    // ----------
+    // PROFESSION
+    // ----------
     public static List<KeyValueStringLabel> loadProfession() {
         // data for Profession
         KeyValueString pb1 = new KeyValueStringImpl("PR1", "Photographer");
@@ -153,5 +150,21 @@ public class MockDatas {
         KeyValueString pb7 = new KeyValueStringImpl("PR7", "Developer");
         KeyValueString pb8 = new KeyValueStringImpl("PR8", "Gardener");
         return Arrays.asList(pb1, pb2, pb3, pb4, pb5, pb6, pb7, pb8);
+    }
+
+    public static String loadProfessionJson() {
+        // data for Profession
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        sb.append("{ \"id\": 1, \"code\":\"PR1\", \"name\": \"Photographer\" },");
+        sb.append("{ \"id\": 2, \"code\":\"PR2\", \"name\": \"Politic\" },");
+        sb.append("{ \"id\": 3, \"code\":\"PR3\", \"name\": \"Poet\" },");
+        sb.append("{ \"id\": 4, \"code\":\"PR4\", \"name\": \"Podiatrist\" },");
+        sb.append("{ \"id\": 5, \"code\":\"PR5\", \"name\": \"Swimmer\" },");
+        sb.append("{ \"id\": 6, \"code\":\"PR6\", \"name\": \"Spokesman\" },");
+        sb.append("{ \"id\": 7, \"code\":\"PR7\", \"name\": \"Developer\" },");
+        sb.append("{ \"id\": 8, \"code\":\"PR8\", \"name\": \"Gardener\" }");
+        sb.append("]");
+        return sb.toString();
     }
 }
