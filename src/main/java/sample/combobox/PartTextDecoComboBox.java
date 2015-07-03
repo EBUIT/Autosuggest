@@ -44,19 +44,18 @@ public class PartTextDecoComboBox<T> extends ComboBox<T> {
     private String searchString;
 
     private Function<String, List<KeyValueString>> searchFunction;
-    private Function<String, List<KeyValueString>> datas;
+    private Function<String, List<KeyValueString>> dataSource;
 
     public PartTextDecoComboBox() {
         setEditable(true);
     }
 
-    public void setDatas(Function<String, List<KeyValueString>> datas) {
-        this.datas = datas;
+    public void setDataSource(Function<String, List<KeyValueString>> dataSource) {
+        this.dataSource = dataSource;
     }
 
-    // TODO call a datasource
-    public List<KeyValueString> getDatas() {
-        return datas.apply(null);
+    public List<KeyValueString> getDataSource() {
+        return dataSource.apply(null);
     }
 
     public void init(Function<String, List<KeyValueString>> datas, Function<T, String> textFieldFormatter) {
@@ -64,8 +63,8 @@ public class PartTextDecoComboBox<T> extends ComboBox<T> {
         setCustomCellFactory();
         addEventHandler(KeyEvent.KEY_PRESSED, t -> this.hide());
         addEventHandler(KeyEvent.KEY_RELEASED, createKeyReleaseEventHandler());
-        this.datas = datas;
-        this.searchFunction = term -> this.getDatas().stream().filter(item -> item.getValue().contains(term == null ? "" : term)).collect(Collectors.toList());
+        this.dataSource = datas;
+        this.searchFunction = term -> this.getDataSource().stream().filter(item -> item.getValue().contains(term == null ? "" : term)).collect(Collectors.toList());
         setTextFieldFormatter(textFieldFormatter);
     }
 
@@ -109,7 +108,7 @@ public class PartTextDecoComboBox<T> extends ComboBox<T> {
                 searchString = PartTextDecoComboBox.this.getEditor().getText();
                 int searchStringLength = searchString.length();
 
-                // datas filtering
+                // dataSource filtering
                 ObservableList<T> list = FXCollections.observableArrayList((Collection<? extends T>) searchFunction.apply(searchString));
                 PartTextDecoComboBox.this.setItems(list);
 
